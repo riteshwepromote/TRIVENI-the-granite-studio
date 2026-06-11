@@ -188,24 +188,7 @@ export default function TriveniScrollCanvas() {
   return (
     <div ref={containerRef} className="relative w-full h-[450vh] bg-[#000616]">
       {/* Full screen preloading state */}
-      {!isPreloadingComplete && (
-        <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#000616] text-white">
-          <div className="relative mb-8 flex items-center justify-center">
-            {/* Elegant outer glow ring */}
-            <div className="absolute h-24 w-24 rounded-full border border-white/5 bg-transparent animate-ping" />
-            <div className="absolute h-16 w-16 rounded-full border border-gold/20 bg-transparent animate-spin border-t-gold" />
-            <Sparkles className="h-6 w-6 text-gold animate-pulse" />
-          </div>
-          <h2 className="text-sm font-semibold tracking-[0.3em] uppercase text-white/90 mb-2">
-            TRIVENI
-          </h2>
-          <p className="text-xs font-mono text-white/40 tracking-wider">
-            PRELOADING TIMELINE :{" "}
-            {Math.round((loadedCount / TOTAL_FRAMES) * 100)}% ({loadedCount}/
-            {TOTAL_FRAMES})
-          </p>
-        </div>
-      )}
+      
 
       {/* Pinned Hardware-Accelerated Canvas Wrapper */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex items-center justify-center z-10">
