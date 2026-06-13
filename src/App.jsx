@@ -27,17 +27,11 @@ import WPCPandelling from "./pages/products/WPCpendeling";
 
 function App() {
   return (
-    // min-h-screen combined with flex-col keeps Footer accurately pinned at the bottom 
-    // max-w-full prevents unexpected content items from scaling past the screen width boundary
-    <div className="relative min-h-screen w-full max-w-full flex flex-col overflow-x-hidden bg-[#0a0a0a]">
-      {/* Top Navigation Anchor */}
+    <div className="relative min-h-screen flex flex-col">
       <Navbar />
-      
-      {/* Resets browser coordinate views cleanly across path modifications */}
-      <ScrollToTop />
+       <ScrollToTop />
 
-      {/* Main Viewport Container Frame - Automatically resizes fluidly on tablet & mobile viewports */}
-      <main className="flex-1 w-full max-w-full overflow-hidden">
+      <div className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/projects" element={<Projects />} />
@@ -47,13 +41,11 @@ function App() {
           <Route path="/book-consultation" element={<BookConsultation />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/legacy" element={<Legacy />} />
-          
-          {/* Projects Segments */}
           <Route path="/corporate-projects" element={<CorporateProjects />} />
           <Route path="/restaurants" element={<RestaurantProjects />} />
           <Route path="/residential" element={<ResidentialProjects />} />
 
-          {/* Premium Stone & Finish Material Products Catalogs */}
+          {/* products */}
           <Route path="/granite" element={<Granite />} />
           <Route path="/sandstone" element={<Sandstone />} />
           <Route path="/limestone" element={<Limestone />} />
@@ -66,7 +58,6 @@ function App() {
         </Routes>
       </main>
 
-      {/* Bottom Global Footer Layout */}
       <Footer />
     </div>
   );
