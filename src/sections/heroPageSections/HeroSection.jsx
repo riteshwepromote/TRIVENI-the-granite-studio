@@ -17,7 +17,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section id="hero" className="relative w-full h-screen overflow-hidden bg-[#0a0a0a]">
+    <section id="hero" className="relative w-full h-[100vh] overflow-hidden bg-[#0a0a0a]">
       <AnimatePresence mode="wait">
         {isMobile ? (
           // --- MOBILE CREATIVE VIEW ---
@@ -33,7 +33,7 @@ export default function HeroSection() {
               initial={{ scale: 1.2, filter: "brightness(0.3) blur(4px)" }}
               animate={{ 
                 scale: 1, 
-                filter: "brightness(0.6) blur(0px)",
+                filter: "brightness(1.2) blur(0px)",
                 transition: { duration: 1.8, ease: [0.16, 1, 0.3, 1] }
               }}
               className="absolute inset-0 z-0"
