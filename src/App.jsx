@@ -27,11 +27,21 @@ import WPCPandelling from "./pages/products/WPCpendeling";
 
 function App() {
   return (
-    <div className="relative min-h-screen flex flex-col">
+    /* 1. min-h-screen + flex flex-col keeps your base layout structure fluid.
+      2. overflow-x-clip handles extreme elements bleeding horizontally on mobile internal 
+         sub-pages WITHOUT blocking vertical layout scroll tracking calculations on your main canvas.
+    */
+    <div className="relative min-h-screen w-full flex flex-col overflow-x-clip bg-[#0a0a0a]">
+      {/* Global Navigation Layout */}
       <Navbar />
-       <ScrollToTop />
+      
+      {/* Scroll Restoration Coordinates Sync */}
+      <ScrollToTop />
 
-      <div className="flex-1">
+      {/* Main structural body remains completely wide open vertically so that 
+        your 450vh Canvas viewport scrolling container works exactly as intended.
+      */}
+      <main className="flex-1 w-full flex flex-col">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/projects" element={<Projects />} />
@@ -41,11 +51,13 @@ function App() {
           <Route path="/book-consultation" element={<BookConsultation />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/legacy" element={<Legacy />} />
+          
+          {/* Project Portfolio Segments */}
           <Route path="/corporate-projects" element={<CorporateProjects />} />
           <Route path="/restaurants" element={<RestaurantProjects />} />
           <Route path="/residential" element={<ResidentialProjects />} />
 
-          {/* products */}
+          {/* Premium Architectural Product Collections */}
           <Route path="/granite" element={<Granite />} />
           <Route path="/sandstone" element={<Sandstone />} />
           <Route path="/limestone" element={<Limestone />} />
@@ -55,12 +67,10 @@ function App() {
           <Route path="/thermopine" element={<Theromine />} />
           <Route path="/i-clad" element={<IClad />} />
           <Route path="/wpc-panelling" element={<WPCPandelling />} />
-
-
-
         </Routes>
-      </div>
+      </main>
 
+      {/* Persistent Base Layout Footer */}
       <Footer />
     </div>
   );

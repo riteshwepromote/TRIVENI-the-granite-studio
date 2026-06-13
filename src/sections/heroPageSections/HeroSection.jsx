@@ -5,7 +5,7 @@ const TOTAL_FRAMES = 176;
 const FRAME_PREFIX = "ezgif-frame-";
 const FRAME_EXT = ".jpg";
 
-// ─── Mobile Hero ──────────────────────────────────────────────────────────────
+// ─── Mobile Hero (Fully Responsive & Contained) ──────────────────────────────
 function MobileHero() {
   return (
     <>
@@ -53,181 +53,188 @@ function MobileHero() {
         }
       `}</style>
 
-      <section
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100svh",
-          overflow: "hidden",
-          background: "#0d0b08",
-        }}
-      >
-        {/* Ken Burns Image */}
-        <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <img
-            src={heroImg}
-            alt="Triveni luxury stone"
-            className="triveni-kb-img"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center",
-            }}
-          />
-        </div>
-
-        {/* Grain overlay */}
-        <div
+      {/* FIXED: Added structural container wrappers for mobile safety scope.
+        Enforces explicit horizontal limits to stop typography text clusters 
+        or rules from creating layout breaks or extra blank whitespace.
+      */}
+      <div style={{ width: "100%", maxWidth: "100%", overflowX: "hidden" }}>
+        <section
           style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E\")",
-            backgroundRepeat: "repeat",
-            backgroundSize: "180px",
-            opacity: 0.45,
-            pointerEvents: "none",
-            mixBlendMode: "overlay",
-          }}
-        />
-
-        {/* Gradient vignette */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(to bottom, rgba(13,11,8,0.25) 0%, rgba(13,11,8,0.05) 35%, rgba(13,11,8,0.55) 75%, rgba(13,11,8,0.88) 100%)",
-            pointerEvents: "none",
-          }}
-        />
-
-        {/* Top rule */}
-        <div
-          className="triveni-rule"
-          style={{
-            position: "absolute",
-            top: 48,
-            left: 28,
-            right: 28,
-            height: 1,
-            background: "linear-gradient(90deg, transparent, #c8a96e, transparent)",
-          }}
-        />
-
-        {/* Content */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-            padding: "0 24px",
-            gap: 0,
+            position: "relative",
+            width: "100%",
+            height: "100svh", // Adapts perfectly to dynamic mobile browser toolbars
+            overflow: "hidden",
+            background: "#0d0b08",
           }}
         >
-          <p
-            className="triveni-eyebrow"
-            style={{
-              fontFamily: "'Jost', sans-serif",
-              fontSize: 10,
-              letterSpacing: "0.35em",
-              color: "#c8a96e",
-              margin: "0 0 20px",
-              textTransform: "uppercase",
-            }}
-          >
-            The Art of Stone
-          </p>
+          {/* Ken Burns Image */}
+          <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+            <img
+              src={heroImg}
+              alt="Triveni luxury stone"
+              className="triveni-kb-img"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center",
+              }}
+            />
+          </div>
 
-          <h1
-            className="triveni-title"
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: "clamp(52px, 16vw, 80px)",
-              fontWeight: 300,
-              color: "#f5ede0",
-              letterSpacing: "0.06em",
-              lineHeight: 1,
-              margin: "0 0 16px",
-            }}
-          >
-            TRIVENI
-          </h1>
-
-          <p
-            className="triveni-subtitle"
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: 15,
-              fontStyle: "italic",
-              color: "#c8a96e",
-              letterSpacing: "0.12em",
-              margin: 0,
-            }}
-          >
-            Luxury Stone &amp; Materials
-          </p>
-        </div>
-
-        {/* Bottom rule */}
-        <div
-          className="triveni-rule"
-          style={{
-            position: "absolute",
-            bottom: 68,
-            left: 28,
-            right: 28,
-            height: 1,
-            background: "linear-gradient(90deg, transparent, #c8a96e, transparent)",
-          }}
-        />
-
-        {/* Scroll cue */}
-        <div
-          className="triveni-scroll-cue"
-          style={{
-            position: "absolute",
-            bottom: 28,
-            left: "50%",
-            transform: "translateX(-50%)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 6,
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "'Jost', sans-serif",
-              fontSize: 8,
-              letterSpacing: "0.3em",
-              color: "#c8a96e",
-              opacity: 0.7,
-              textTransform: "uppercase",
-            }}
-          >
-            Scroll
-          </span>
+          {/* Grain overlay */}
           <div
-            className="triveni-scroll-dot"
             style={{
-              width: 1,
-              height: 22,
-              background: "linear-gradient(to bottom, #c8a96e, transparent)",
+              position: "absolute",
+              inset: 0,
+              backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E\")",
+              backgroundRepeat: "repeat",
+              backgroundSize: "180px",
+              opacity: 0.45,
+              pointerEvents: "none",
+              mixBlendMode: "overlay",
             }}
           />
-        </div>
-      </section>
+
+          {/* Gradient vignette */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(to bottom, rgba(13,11,8,0.25) 0%, rgba(13,11,8,0.05) 35%, rgba(13,11,8,0.55) 75%, rgba(13,11,8,0.88) 100%)",
+              pointerEvents: "none",
+            }}
+          />
+
+          {/* Top rule */}
+          <div
+            className="triveni-rule"
+            style={{
+              position: "absolute",
+              top: 48,
+              left: 28,
+              right: 28,
+              height: 1,
+              background: "linear-gradient(90deg, transparent, #c8a96e, transparent)",
+            }}
+          />
+
+          {/* Content */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              padding: "0 24px",
+              gap: 0,
+            }}
+          >
+            <p
+              className="triveni-eyebrow"
+              style={{
+                fontFamily: "'Jost', sans-serif",
+                fontSize: 10,
+                letterSpacing: "0.35em",
+                color: "#c8a96e",
+                margin: "0 0 20px",
+                textTransform: "uppercase",
+              }}
+            >
+              The Art of Stone
+            </p>
+
+            <h1
+              className="triveni-title"
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                // Clamp dynamically handles scaling beautifully down to tiny screens (e.g., iPhone SE)
+                fontSize: "clamp(42px, 14vw, 72px)",
+                fontWeight: 300,
+                color: "#f5ede0",
+                letterSpacing: "0.06em",
+                lineHeight: 1,
+                margin: "0 0 16px",
+              }}
+            >
+              TRIVENI
+            </h1>
+
+            <p
+              className="triveni-subtitle"
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontSize: 15,
+                fontStyle: "italic",
+                color: "#c8a96e",
+                letterSpacing: "0.12em",
+                margin: 0,
+              }}
+            >
+              Luxury Stone &amp; Materials
+            </p>
+          </div>
+
+          {/* Bottom rule */}
+          <div
+            className="triveni-rule"
+            style={{
+              position: "absolute",
+              bottom: 68,
+              left: 28,
+              right: 28,
+              height: 1,
+              background: "linear-gradient(90deg, transparent, #c8a96e, transparent)",
+            }}
+          />
+
+          {/* Scroll cue */}
+          <div
+            className="triveni-scroll-cue"
+            style={{
+              position: "absolute",
+              bottom: 28,
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "'Jost', sans-serif",
+                fontSize: 8,
+                letterSpacing: "0.3em",
+                color: "#c8a96e",
+                opacity: 0.7,
+                textTransform: "uppercase",
+              }}
+            >
+              Scroll
+            </span>
+            <div
+              className="triveni-scroll-dot"
+              style={{
+                width: 1,
+                height: 22,
+                background: "linear-gradient(to bottom, #c8a96e, transparent)",
+              }}
+            />
+          </div>
+        </section>
+      </div>
     </>
   );
 }
 
-// ─── Desktop Canvas ────────────────────────────────────────────────────────────
+// ─── Desktop Canvas (100% Isolated & Untouched) ──────────────────────────────────
 function DesktopCanvas() {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
