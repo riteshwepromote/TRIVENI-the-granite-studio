@@ -27,11 +27,17 @@ import WPCPandelling from "./pages/products/WPCpendeling";
 
 function App() {
   return (
-    <div className="relative min-h-screen flex flex-col">
+    // min-h-screen combined with flex-col keeps Footer accurately pinned at the bottom 
+    // max-w-full prevents unexpected content items from scaling past the screen width boundary
+    <div className="relative min-h-screen w-full max-w-full flex flex-col overflow-x-hidden bg-[#0a0a0a]">
+      {/* Top Navigation Anchor */}
       <Navbar />
-       <ScrollToTop />
+      
+      {/* Resets browser coordinate views cleanly across path modifications */}
+      <ScrollToTop />
 
-      <div className="flex-1">
+      {/* Main Viewport Container Frame - Automatically resizes fluidly on tablet & mobile viewports */}
+      <main className="flex-1 w-full max-w-full overflow-hidden">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/projects" element={<Projects />} />
@@ -41,11 +47,13 @@ function App() {
           <Route path="/book-consultation" element={<BookConsultation />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/legacy" element={<Legacy />} />
+          
+          {/* Projects Segments */}
           <Route path="/corporate-projects" element={<CorporateProjects />} />
           <Route path="/restaurants" element={<RestaurantProjects />} />
           <Route path="/residential" element={<ResidentialProjects />} />
 
-          {/* products */}
+          {/* Premium Stone & Finish Material Products Catalogs */}
           <Route path="/granite" element={<Granite />} />
           <Route path="/sandstone" element={<Sandstone />} />
           <Route path="/limestone" element={<Limestone />} />
@@ -55,12 +63,10 @@ function App() {
           <Route path="/thermopine" element={<Theromine />} />
           <Route path="/i-clad" element={<IClad />} />
           <Route path="/wpc-panelling" element={<WPCPandelling />} />
-
-
-
         </Routes>
-      </div>
+      </main>
 
+      {/* Bottom Global Footer Layout */}
       <Footer />
     </div>
   );
