@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import TriveniScrollCanvas from "../../components/TriveniScrollCanvas";
-import heroImg from "../../assets/heroimg.jpg";
+import heroImg from "../../assets/heroImg.jpg";
 
 export default function HeroSection() {
   const [isMobile, setIsMobile] = useState(false);
