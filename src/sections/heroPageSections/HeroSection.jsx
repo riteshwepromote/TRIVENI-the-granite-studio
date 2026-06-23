@@ -425,7 +425,7 @@ function DesktopCanvas() {
               fontWeight: 500,
             }}
           >
-            The Art of Stone
+Crafting Spaces 
           </p>
           <h1
             className="animate-desktop-title"
@@ -439,7 +439,7 @@ function DesktopCanvas() {
               color: "#ffffff"
             }}
           >
-            TRIVENI
+Since 1989
           </h1>
           <div 
             className="animate-desktop-line"
@@ -454,14 +454,14 @@ function DesktopCanvas() {
             className="animate-desktop-subtitle"
             style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: "20px",
+              fontSize: "18px",
               fontStyle: "italic",
               color: "#c8a96e",
               letterSpacing: "0.1em",
               margin: 0
             }}
           >
-            Luxury Stone &amp; Materials
+Across India,  &amp; Nepal & UAE
           </p>
         </div>
 

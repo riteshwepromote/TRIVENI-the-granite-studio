@@ -292,7 +292,7 @@ export default function AboutFacility() {
       <section
         className="af-section"
         onMouseEnter={() => { setIsHovered(true); stopAutoPlay(); }}
-        onMouseLeave={() => { setIsHovered(false); startAutoPlay(); }}
+        onMouseLeave={() => { setwIsHovered(false); startAutoPlay(); }}
         aria-label="Triveni facility gallery"
       >
         {/* Header */}
