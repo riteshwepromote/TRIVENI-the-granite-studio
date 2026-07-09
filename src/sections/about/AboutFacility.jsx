@@ -1,488 +1,171 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
+// --- Asset Mock Bindings ---
 import built1 from "../../assets/about/facility1.png";
 import built2 from "../../assets/about/facility2.png";
 import built3 from "../../assets/about/facility3.png";
 
-const SLIDES = [
-  { id: "triveni-1", url: built1, alt: "Triveni Premium Showroom Display",     label: "Showroom" },
-  { id: "triveni-2", url: built2, alt: "Exclusive Exotic Granite Collection",   label: "Granite Collection" },
-  { id: "triveni-3", url: built3, alt: "Luxury Marble Architecture Suite",      label: "Marble Suite" },
+const REFRESHED_PROCESS_STEPS = [
+  {
+    num: "01",
+    title: "Handpicked at the Source",
+    subtitle: "Direct Quarry Selection",
+    desc: "Every great stone begins at its origin. We directly procure granite blocks from carefully selected mines across India and abroad. Instead of buying through multiple intermediaries, our team personally inspects and selects only the finest blocks based on color consistency, strength, pattern, and natural beauty. This direct sourcing allows us to offer superior quality while maintaining complete transparency.",
+    img: built1
+  },
+  {
+    num: "02",
+    title: "Precision Processing",
+    subtitle: "Abu Road State-of-the-Art Facility",
+    desc: "Once selected, the blocks are transported to our state-of-the-art processing facility in Abu Road, Rajasthan. Using advanced Italian technology and precision machinery, every slab is processed with strict quality standards. This ensures uniform thickness throughout the slab, superior surface flatness, exceptional polish, clarity, and enhanced edge quality.",
+    img: built2
+  },
+  {
+    num: "03",
+    title: "Genuine Character, No Alterations",
+    subtitle: "Zero Artificial Enhancement",
+    desc: "At Triveni, we believe nature creates the most beautiful designs. Unlike many suppliers who use dyes, colors, or artificial treatments to enhance the appearance of stone, we do not alter the natural face of our granite. What you see is the stone's genuine character, ensuring long-term color stability and absolute authenticity.",
+    img: built3
+  },
+  {
+    num: "04",
+    title: "Safe Handling & Logistics",
+    subtitle: "Reinforced Transportation Matrix",
+    desc: "Quality can be lost during transportation if handled carelessly. Every slab is packed, secured, and loaded with utmost care to prevent corner chipping, edge damage, or surface scratches. Our logistics team follows strict handling protocols so that the stone reaches our showroom and your site in pristine condition.",
+    img: built1
+  },
+  {
+    num: "05",
+    title: "Experience Before You Buy",
+    subtitle: "Mohali Experience Centre",
+    desc: "Our Mohali Experience Centre is designed to make stone selection simple, transparent, and inspiring. Clients can explore a wide range of carefully curated granites, marbles, and luxury surfaces in a comfortable environment. Every slab is displayed honestly, allowing customers to see the actual material before making a decision.",
+    img: built2
+  },
+  {
+    num: "06",
+    title: "Expert Design Assistance",
+    subtitle: "Aesthetic & Structural Guidance",
+    desc: "Selecting stone is not just about choosing a color—it's about creating a space. Our in-house interior design team assists clients, architects, and designers in selecting the right materials based on aesthetics, functionality, lighting conditions, and overall architectural design language to transform ideas into reality.",
+    img: built3
+  },
+  {
+    num: "07",
+    title: "Site Visits & Technical Audits",
+    subtitle: "Proactive Installation Support",
+    desc: "Our relationship does not end with the sale. The Triveni team regularly visits project sites before, during, and after installation. We coordinate with masons and contractors to ensure proper laying techniques, correct pattern matching, alignment, finishing, and detailing to prevent costly installation errors.",
+    img: built1
+  },
+  {
+    num: "08",
+    title: "A Commitment Beyond Stone",
+    subtitle: "End-to-End Peace of Mind",
+    desc: "At Triveni, we don't simply sell granite. We manage every single step—from mine selection and precision manufacturing to design consultation, site supervision, and final installation support. This comprehensive end-to-end approach allows us to deliver not just stone, but complete peace of mind.",
+    img: built2
+  }
 ];
 
-const AUTOPLAY_INTERVAL = 4500;
+const designSystemTokens = `
+  @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght=0,6..96,400;1,6..96,400&family=Cormorant+Garamond:ital,wght=0,300;0,400;1,300&family=Inter:wght=300;400;500;600&display=swap');
 
-const styles = `
-  .af-section {
-    background: #FAF8F5;
-    padding: 80px 0 88px;
-    overflow: hidden;
-    user-select: none;
-    font-family: 'Albert Sans', sans-serif;
-  }
-
-  /* ── Header ── */
-  .af-header {
-    max-width: 860px;
-    margin: 0 auto 52px;
-    text-align: center;
-    padding: 0 24px;
-  }
-  .af-eyebrow {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.42em;
-    text-transform: uppercase;
-    color: #C8A96E;
-    display: block;
-    margin-bottom: 18px;
-  }
-  .af-heading {
-    font-family: 'Obviously', 'Albert Sans', sans-serif;
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
-    font-weight: 300;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-    color: #1A1410;
-    margin: 0 0 20px;
-  }
-  .af-heading em {
-    font-style: italic;
-    color: #C8A96E;
-  }
-  .af-rule {
-    width: 40px;
-    height: 1px;
-    background: #C8A96E;
-    opacity: 0.45;
-    margin: 0 auto 20px;
-  }
-  .af-body {
-    font-size: clamp(0.8125rem, 1.5vw, 0.9375rem);
-    line-height: 1.8;
-    color: #6B6460;
-    max-width: 560px;
-    margin: 0 auto;
-    text-wrap: balance;
-  }
-
-  /* ── Stage ── */
-  .af-stage {
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 16px;
-  }
-  .af-track {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 1360px;
-    gap: clamp(10px, 1.5vw, 20px);
-  }
-
-  /* ── Slide cards ── */
-  .af-slide {
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    flex-shrink: 0;
-    border-radius: 12px;
-  }
-  .af-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    pointer-events: none;
-  }
-  .af-slide--center {
-    width: 58%;
-    aspect-ratio: 16/10;
-    z-index: 20;
-    box-shadow: 0 20px 60px rgba(26,20,16,0.18), 0 4px 16px rgba(26,20,16,0.08);
-  }
-  .af-slide--side {
-    width: 19%;
-    aspect-ratio: 3/4;
-    z-index: 10;
-  }
-  .af-slide--side:hover .af-side-dim {
-    opacity: 0.1;
-  }
-  .af-side-dim {
-    position: absolute;
-    inset: 0;
-    background: #1A1410;
-    opacity: 0.35;
-    transition: opacity 0.4s ease;
-  }
-
-  /* ── Engraved slide counter — the signature element ── */
-  .af-counter {
-    position: absolute;
-    bottom: 20px;
-    left: 24px;
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    pointer-events: none;
-  }
-  .af-counter-current {
-    font-family: 'Obviously', 'Albert Sans', sans-serif;
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 200;
-    line-height: 1;
-    color: rgba(255,255,255,0.9);
-    letter-spacing: -0.02em;
-  }
-  .af-counter-sep {
-    width: 28px;
-    height: 1px;
-    background: rgba(255,255,255,0.45);
-    align-self: center;
-    flex-shrink: 0;
-  }
-  .af-counter-total {
-    font-family: 'Albert Sans', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.55);
-  }
-
-  /* Slide label pill */
-  .af-slide-label {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.75);
-    background: rgba(26,20,16,0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 5px 12px;
-    border-radius: 4px;
-    pointer-events: none;
-  }
-
-  /* ── Progress bar nav ── */
-  .af-progress-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 38px;
-    margin-top: 32px;
-    padding: 0 24px;
-  }
-  .af-progress-btn {
-    background: none;
-    border: none;
-    padding: 6px 0;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    align-items: flex-start;
-    min-width: 64px;
-    max-width: 100px;
-    flex: 1;
-    outline: none;
-  }
-  .af-progress-btn:focus-visible .af-progress-track {
-    box-shadow: 0 0 0 2px #C8A96E;
-  }
-  .af-progress-name {
-    font-size: 8.5px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #B5ABA5;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: color 0.3s ease;
-  }
-  .af-progress-btn[aria-current="true"] .af-progress-name {
-    color: #1A1410;
-  }
-  .af-progress-track {
-    width: 100%;
-    height: 2px;
-    background: #E8E0D8;
-    border-radius: 2px;
-    overflow: hidden;
-    position: relative;
-  }
-  .af-progress-fill {
-    height: 100%;
-    background: #C8A96E;
-    border-radius: 2px;
-    transform-origin: left;
-  }
-
-  @media (max-width: 640px) {
-    .af-slide--center { width: 72%; aspect-ratio: 4/3; }
-    .af-slide--side   { width: 12%; aspect-ratio: 2/3; }
-    .af-counter-current { font-size: 1.75rem; }
-    .af-slide-label { display: none; }
-    .af-progress-name { display: none; }
-    .af-progress-btn { min-width: 40px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .af-progress-fill { transition: none !important; }
-  }
+  .font-luxury-serif { font-family: 'Cormorant Garamond', serif; }
+  .font-luxury-display { font-family: 'Bodoni Moda', serif; }
+  .font-editorial-sans { font-family: 'Inter', sans-serif; }
 `;
 
 export default function AboutFacility() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const timerRef = useRef(null);
-  const nextSlideRef = useRef(null);
-  const len = SLIDES.length;
+  const containerRef = useRef(null);
 
-  // Stable nextSlide via ref — avoids stale closure in interval
-  nextSlideRef.current = () => setActiveIndex((i) => (i + 1) % len);
+  // Offset tracking aligned cleanly to viewport boundaries
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  const stopAutoPlay = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-  }, []);
-
-  const startAutoPlay = useCallback(() => {
-    stopAutoPlay();
-    timerRef.current = setInterval(() => nextSlideRef.current(), AUTOPLAY_INTERVAL);
-  }, [stopAutoPlay]);
-
-  // Single stable effect — not re-triggered by activeIndex changes
-  useEffect(() => {
-    startAutoPlay();
-    return stopAutoPlay;
-  }, [startAutoPlay, stopAutoPlay]);
-
-  const goTo = (index) => {
-    stopAutoPlay();
-    setActiveIndex(index);
-    // Resume autoplay after a manual interaction pause
-    setTimeout(startAutoPlay, AUTOPLAY_INTERVAL * 1.5);
-  };
-
-  const getSlides = () => {
-    const leftIdx  = (activeIndex - 1 + len) % len;
-    const rightIdx = (activeIndex + 1) % len;
-    return [
-      { ...SLIDES[leftIdx],  pos: "side", absoluteIndex: leftIdx  },
-      { ...SLIDES[activeIndex], pos: "center", absoluteIndex: activeIndex },
-      { ...SLIDES[rightIdx], pos: "side", absoluteIndex: rightIdx },
-    ];
-  };
-
-  const padded = (n) => String(n).padStart(2, "0");
+  // Pure Viewport Width translation mapping to bypass component layout rounding issues
+  const xTranslation = useTransform(scrollYProgress, [0, 1], ["0vw", "-700vw"]);
 
   return (
-    <>
-      <style>{styles}</style>
-      <section
-        className="af-section"
-        onMouseEnter={() => { setIsHovered(true); stopAutoPlay(); }}
-        onMouseLeave={() => { setwIsHovered(false); startAutoPlay(); }}
-        aria-label="Triveni facility gallery"
-      >
-        {/* Header */}
-        <div className="af-header">
-          <span className="af-eyebrow">The Triveni Experience</span>
-          <h2 className="af-heading">
-            Timeless Stone.<br />
-            <em>Exceptional Spaces.</em>
-          </h2>
-          <div className="af-rule" />
-          <p className="af-body">
-            Three decades of curating the world's finest granite, marble, quartz, and
-            decorative surfaces — helping architects, designers, and homeowners build
-            spaces that endure.
-          </p>
-        </div>
+    <div className="bg-[#1A1817] text-[#2D2A28] font-editorial-sans antialiased selection:bg-[#B88272] selection:text-white">
+      <style>{designSystemTokens}</style>
 
-        {/* Stage */}
-        <div className="af-stage">
-          <div className="af-track">
-            <AnimatePresence mode="popLayout" initial={false}>
-              {getSlides().map((slide) => {
-                const isCenter = slide.pos === "center";
-                return (
-                  <motion.div
-                    key={slide.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: isCenter ? 1 : 0.7, scale: isCenter ? 1 : 0.97 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 160, damping: 28 }}
-                    onClick={() => !isCenter && goTo(slide.absoluteIndex)}
-                    className={isCenter ? "af-slide af-slide--center" : "af-slide af-slide--side"}
-                    aria-label={isCenter ? undefined : `View: ${slide.alt}`}
-                    role={isCenter ? undefined : "button"}
-                    tabIndex={isCenter ? -1 : 0}
-                    onKeyDown={(e) => e.key === "Enter" && !isCenter && goTo(slide.absoluteIndex)}
-                  >
-                    <img src={slide.url} alt={slide.alt} />
-
-                    {/* Side dim overlay */}
-                    {!isCenter && <div className="af-side-dim" aria-hidden="true" />}
-
-                    {/* Engraved counter — signature element */}
-                    {isCenter && (
-                      <motion.div
-                        className="af-counter"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.15 }}
-                        aria-hidden="true"
-                      >
-                        <span className="af-counter-current">{padded(activeIndex + 1)}</span>
-                        <span className="af-counter-sep" />
-                        <span className="af-counter-total">{padded(len)}</span>
-                      </motion.div>
-                    )}
-
-                    {/* Slide label */}
-                    {isCenter && (
-                      <motion.div
-                        className="af-slide-label"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        aria-hidden="true"
-                      >
-                        {slide.label}
-                      </motion.div>
-                    )}
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
-          </div>
-        </div>
-
-        {/* Progress bar nav */}
-        <div className="af-progress-row" role="tablist" aria-label="Gallery navigation">
-          {SLIDES.map((slide, i) => {
-            const isActive = i === activeIndex;
-            return (
-              <button
-                key={slide.id}
-                className="af-progress-btn "
-                role="tab"
-                aria-selected={isActive}
-                aria-current={isActive ? "true" : "false"}
-                aria-label={`Slide ${i + 1}: ${slide.label}`}
-                onClick={() => goTo(i)}
-              >
-                <span className="af-progress-name">{slide.label}</span>
-                <div className="af-progress-track">
-                  <motion.div
-                    className="af-progress-fill"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: isActive ? 1 : 0 }}
-                    transition={
-                      isActive && !isHovered
-                        ? { duration: AUTOPLAY_INTERVAL / 1000, ease: "linear" }
-                        : { duration: 0.25, ease: "easeOut" }
-                    }
-                  />
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-            {/* OUR PROCESS SECTION */}
-      <section className="bg-white border-b border-zinc-100 py-24">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12">
+      {/* SCROLL TRACK CONTAINER */}
+      <div ref={containerRef} className="relative h-[800vh] w-full bg-[#1A1817]">
+        
+        {/* STICKY BOX PIN */}
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
           
-          {/* Section Header */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-20">
-            <div className="lg:col-span-4">
-              <span className="text-xs font-semibold tracking-widest text-[#C8A96E] uppercase block mb-3">
-                Our Workflow
-              </span>
-              <h2 className="text-3xl font-light tracking-tight text-zinc-950">
-                From Quarry to Site
-              </h2>
-            </div>
-            <div className="lg:col-span-8 flex items-end">
-              <p className="text-zinc-500 font-light text-sm max-w-md leading-relaxed">
-                We maintain direct quality oversight at every juncture, ensuring your chosen blocks are processed exactly to dimensional specifications.
-              </p>
-            </div>
-          </div>
-
-          {/* Process Timeline Blocks */}
-          <div className="max-w-4xl mx-auto space-y-0">
-            {[
-              {
-                step: "01",
-                title: "Selection",
-                desc: "We inspect raw granite and natural stone blocks straight from trusted quarries, sorting them carefully by color uniformity, crystalline structure durability, and vein patterns."
-              },
-              {
-                step: "02",
-                title: "Quality Inspection",
-                desc: "Each individual slab undergoes thorough density testing and surface anomaly scans. We filter out hairline fractures or foundational structural shifts before cutting begins."
-              },
-              {
-                step: "03",
-                title: "Processing",
-                desc: "Using precision milling machinery, the raw stone is slabbed to your specified thicknesses and treated with accurate edge-profiling or polish calibrations."
-              },
-              {
-                step: "04",
-                title: "Packaging",
-                desc: "Finished surfaces are wrapped securely in customized shock-absorbent materials and loaded into heavy-duty reinforced A-frame wooden crates to completely avoid on-road chipping."
-              },
-              {
-                step: "05",
-                title: "Delivery",
-                desc: "Your secure crate bundles are dispatched through specialized freight carriers directly to your site or showroom warehouse, fully tracked along the transit route."
-              }
-            ].map((item, index, arr) => (
-              <div key={index} className="group relative grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-8 pb-12 sm:pb-16">
-                
-                {/* Structural Timeline Vertical Rule Line */}
-                {index !== arr.length - 1 && (
-                  <div className="absolute left-[15px] sm:left-auto sm:right-[15px] top-8 bottom-0 w-[1px] bg-zinc-200 pointer-events-none group-hover:bg-zinc-400 transition-colors hidden sm:block" />
-                )}
-
-                {/* Step Indices Tag */}
-                <div className="sm:col-span-2 flex sm:justify-end items-start pt-1">
-                  <span className="text-xs font-mono tracking-widest text-zinc-400 font-bold bg-[#fcfbf9] px-2 py-1 rounded border border-zinc-200/60 sm:border-none">
-                    {item.step}
-                  </span>
+          {/* HORIZONTAL FLEX CAROUSEL STRIP */}
+          <motion.div 
+            style={{ x: xTranslation }} 
+            className="flex h-full w-[800vw] will-change-transform"
+          >
+            {REFRESHED_PROCESS_STEPS.map((step, idx) => (
+              <section 
+                key={idx}
+                className="w-screen h-screen flex-shrink-0 grid grid-cols-1 lg:grid-cols-12 relative overflow-hidden bg-[#1A1817]"
+              >
+                {/* IMMERSIVE IMAGE LAYER */}
+                <div className="col-span-1 lg:col-span-6 relative h-1/2 lg:h-full w-full overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#1A1817]/80 z-10 hidden lg:block" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1A1817] via-transparent to-transparent z-10 lg:hidden" />
+                  <img
+                    src={step.img}
+                    alt={step.title}
+                    className="w-full h-full object-cover select-none pointer-events-none object-center"
+                    loading={idx <= 1 ? "eager" : "lazy"}
+                  />
+                  <div className="absolute inset-0 border-r border-white/5 pointer-events-none z-20 m-6" />
                 </div>
 
-                {/* Core Context Block */}
-                <div className="sm:col-span-10 pl-4 sm:pl-0 border-l sm:border-none border-zinc-200">
-                  <h3 className="text-lg font-normal text-zinc-950 mb-2 tracking-tight">
-                    {item.title}
-                  </h3>
-                  <p className="text-zinc-500 font-light text-sm leading-relaxed max-w-xl">
-                    {item.desc}
-                  </p>
-                </div>
+                {/* EDITORIAL NARRATIVE CONTENT BLOCK */}
+                <div className="col-span-1 lg:col-span-6 h-1/2 lg:h-full bg-[#1A1817] text-[#F8F5F2] flex flex-col justify-center px-6 md:px-16 lg:px-24 relative">
+                  
+                  {/* Top Navigation HUD */}
+                  <div className="absolute top-8 left-6 right-6 lg:left-24 lg:right-24 hidden md:flex items-center justify-between border-b border-white/10 pb-4">
+                    <span className="text-[10px] tracking-[0.3em] uppercase text-[#B88272] font-semibold">
+                      Triveni Quality Matrix
+                    </span>
+                    <span className="font-luxury-display text-sm tracking-widest text-[#A89A92]/60">
+                      {step.num} // 08
+                    </span>
+                  </div>
 
-              </div>
+                  {/* Core Content Layout */}
+                  <div className="max-w-xl space-y-4 md:space-y-6">
+                    <div>
+                      <span className="text-[10px] tracking-[0.25em] text-[#A89A92] uppercase block font-medium mb-1">
+                        {step.subtitle}
+                      </span>
+                      <h2 className="text-2xl md:text-5xl font-luxury-serif font-light text-white tracking-tight leading-[1.15]">
+                        {step.title.split(" ").map((word, wIdx) => 
+                          wIdx % 2 === 1 ? (
+                            <span key={wIdx} className="font-luxury-display italic text-[#B88272] mr-2">{word} </span>
+                          ) : (
+                            <span key={wIdx} className="mr-2">{word} </span>
+                          )
+                        )}
+                      </h2>
+                    </div>
+
+                    <p className="text-xs md:text-[15px] text-[#F8F5F2]/70 font-light leading-relaxed text-justify tracking-wide">
+                      {step.desc}
+                    </p>
+                  </div>
+
+                  {/* Operational Bottom HUD Footer */}
+                  <div className="absolute bottom-8 left-6 right-6 lg:left-24 lg:right-24 hidden md:flex items-center justify-between border-t border-white/5 pt-4 text-[9px] text-[#A89A92] tracking-wider uppercase font-light">
+                    <span>Mined Quality to Finished Laying</span>
+                    <span>Triveni Production © 2026</span>
+                  </div>
+
+                </div>
+              </section>
             ))}
-          </div>
-
+          </motion.div>
+          
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   );
 }

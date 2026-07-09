@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import heroImg from "../../assets/heroImg.jpg";
+import heroScroledVideo from "../../assets/heroVideo.mp4"
 
 const TOTAL_FRAMES = 176;
 const FRAME_PREFIX = "ezgif-frame-";

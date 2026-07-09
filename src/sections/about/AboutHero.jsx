@@ -1,335 +1,326 @@
-import React, { useEffect, useRef } from "react";
-import building from "../../assets/about/heroImg.png";
+import React, { useEffect, useState, useRef } from "react";
 
-/*
-  Design tokens — scoped to this component so nothing leaks
-  ─────────────────────────────────────────────────────────
-  Brand red      : #FF523B
-  Gold rule      : #C8A96E
-  Off-white      : #F0EDE8
-  Stone grey     : #9C9890
-  Deep charcoal  : #0A0A0A
-*/
-
-const styles = `
-  @keyframes tgs-fade-up {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes tgs-line-grow {
-    from { transform: scaleX(0); }
-    to   { transform: scaleX(1); }
-  }
-  @keyframes tgs-grain {
-    0%, 100% { transform: translate(0, 0); }
-    10%  { transform: translate(-1%, -2%); }
-    30%  { transform: translate(2%, 1%); }
-    50%  { transform: translate(-1%, 2%); }
-    70%  { transform: translate(1%, -1%); }
-    90%  { transform: translate(-2%, 1%); }
+const designSystemStyles = `
+  /* GPU Optimized Scroll & Mouse Engine styles */
+  .smooth-scroll-container {
+    --progress: 0;
+    --mouse-x: 0px;
+    --mouse-y: 0px;
   }
 
-  .tgs-hero {
-    position: relative;
-    width: 100%;
-    height: clamp(340px, 50vw, 480px);
-    background: #0A0A0A;
-    overflow: hidden;
+  /* Completely unconstrained breakout layer to achieve true window edges edge-to-edge bleed */
+  .kinetic-canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    pointer-events: auto;
+    z-index: 10;
   }
 
-  /* ── Background image with parallax-feel zoom ── */
-  .tgs-bg-img {
-    position: absolute;
-    inset: -6% -3%;
-    width: 106%;
-    height: 112%;
+  .kinetic-canvas {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    will-change: transform, border-radius;
+    transform-origin: center center;
+    
+    /* Smoothly interpolate from true Fullscreen window down to the right structural column area */
+    transform: 
+      translate3d(
+        calc(var(--progress) * 23.5vw), 
+        calc(var(--progress) * 0px), 
+        0
+      ) 
+      scaleX(calc(1 - (var(--progress) * 0.58))) 
+      scaleY(calc(1 - (var(--progress) * 0.42)));
+    
+    border-radius: calc(var(--progress) * 16px);
+    box-shadow: 0 30px 80px rgba(45, 42, 40, calc(var(--progress) * 0.06));
+    transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.15s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  @media (max-width: 1023px) {
+    .kinetic-canvas {
+      transform: 
+        translate3d(0, calc(var(--progress) * -12vh), 0)
+        scaleX(calc(1 - (var(--progress) * 0.12))) 
+        scaleY(calc(1 - (var(--progress) * 0.45)));
+    }
+  }
+
+  /* Inner image scale counter-action matrix + dynamic interactive mouse tracking */
+  .kinetic-image {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: brightness(0.42) contrast(1.1) saturate(0.75);
-    transform-origin: center;
+    will-change: transform;
+    
+    transform: 
+      scale(calc(1.15 - (var(--progress) * 0.15)))
+      translate3d(
+        calc(var(--mouse-x) * calc(1 - var(--progress))), 
+        calc(var(--mouse-y) * calc(1 - var(--progress))), 
+        0
+      );
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* --- CINEMATIC INITIAL OVERLAYS --- */
+  
+  /* Delicate luxury framing lines */
+  .cinematic-border-frame {
+    position: absolute;
+    inset: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     pointer-events: none;
-    user-select: none;
-  }
-
-  /* ── Grain texture overlay (pure CSS, no image needed) ── */
-  .tgs-grain {
-    position: absolute;
-    inset: -50%;
-    width: 200%;
-    height: 200%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-    background-size: 160px 160px;
-    opacity: 0.045;
-    animation: tgs-grain 7s steps(2) infinite;
-    pointer-events: none;
-    mix-blend-mode: overlay;
-  }
-
-  /* ── Dual-axis gradient for cinematic depth ── */
-  .tgs-vignette {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(to top,  #0A0A0A 0%, transparent 55%),
-      linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, transparent 40%),
-      linear-gradient(to right, rgba(10,10,10,0.3) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  /* ── Gold horizontal rule — the signature element ── */
-  .tgs-rule {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(to right, transparent 0%, #C8A96E 20%, #C8A96E 80%, transparent 100%);
-    transform-origin: left;
-    transform: scaleX(0);
-  }
-  .tgs-rule.tgs-animate {
-    animation: tgs-line-grow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
-  }
-
-  /* ── Bottom estate strip ── */
-  .tgs-estate {
-    position: absolute;
-    bottom: 16px;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
+    z-index: 12;
     opacity: 0;
-    transition: opacity 0.6s ease 1s;
+    transform: scale(1.02);
+    transition: opacity 2s cubic-bezier(0.16, 1, 0.3, 1), transform 2s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .tgs-estate.tgs-animate { opacity: 1; }
-
-  .tgs-estate-line {
-    flex: 1;
-    max-width: 120px;
-    height: 1px;
-    background: rgba(200, 169, 110, 0.35);
-  }
-  .tgs-estate-label {
-    font-family: 'Albert Sans', sans-serif;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.5em;
-    text-transform: uppercase;
-    color: #C8A96E;
-    opacity: 0.8;
-    white-space: nowrap;
+  .cinematic-border-frame.active {
+    opacity: calc(1 - (var(--progress) * 4));
+    transform: scale(1);
   }
 
-  /* ── Main content ── */
-  .tgs-content {
-    position: relative;
-    z-index: 10;
+  /* Subtle crosshair grid overlay representing architectural precision drawing markers */
+  .architectural-crosshair {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+    z-index: 11;
+    opacity: 0;
+    transition: opacity 1.5s ease-out;
+  }
+  .architectural-crosshair::before, .architectural-crosshair::after {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.25);
+  }
+  .architectural-crosshair::before { top: 14px; left: 0; width: 100%; height: 1px; }
+  .architectural-crosshair::after { left: 14px; top: 0; width: 1px; height: 100%; }
+  
+  .crosshair-tl { top: 60px; left: 60px; }
+  .crosshair-tr { top: 60px; right: 60px; }
+  .crosshair-bl { bottom: 120px; left: 60px; }
+  .crosshair-br { bottom: 120px; right: 60px; }
+  
+  .architectural-crosshair.active {
+    opacity: calc(1 - (var(--progress) * 5));
+  }
+
+  /* Center-aligned ambient branding title typography */
+  .ambient-hero-title {
+    position: absolute;
+    z-index: 13;
     text-align: center;
-    max-width: 720px;
-    padding: 0 1.5rem;
+    color: #FFFFFF;
+    pointer-events: none;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 40px;
+    gap: 16px;
+    will-change: transform, opacity;
+    transform: translate3d(
+      calc(var(--mouse-x) * -0.4 * calc(1 - var(--progress))), 
+      calc(var(--mouse-y) * -0.4 * calc(1 - var(--progress))), 
+      0
+    );
+    opacity: calc(1 - (var(--progress) * 3));
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  /* Eyebrow */
-  .tgs-eyebrow {
-    font-family: 'Albert Sans', sans-serif;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.45em;
-    text-transform: uppercase;
-    color: #FF523B;
-    margin: 0 0 16px;
+  /* Fine-tuned Editorial Content Transitions */
+  .clip-reveal {
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    transform: translateY(30px);
     opacity: 0;
-  }
-  .tgs-eyebrow.tgs-animate {
-    animation: tgs-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-  }
-
-  /* Headline — three words, architectural weight */
-  .tgs-headline {
-    font-family: 'Obviously', 'Albert Sans', sans-serif;
-    font-size: clamp(2rem, 5.5vw, 3.75rem);
-    font-weight: 300;
-    letter-spacing: -0.01em;
-    line-height: 1.08;
-    color: #F0EDE8;
-    margin: 0 0 8px;
-    opacity: 0;
-  }
-  .tgs-headline.tgs-animate {
-    animation: tgs-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+    transition: clip-path 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Accent word gets gold */
-  .tgs-headline-accent {
-    color: #C8A96E;
-    font-style: italic;
+  .clip-reveal.active {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: translateY(0);
+    opacity: 1;
   }
 
-  /* Divider dot */
-  .tgs-dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #FF523B;
-    margin: 14px auto 14px;
-    opacity: 0;
-  }
-  .tgs-dot.tgs-animate {
-    animation: tgs-fade-up 0.5s ease 0.6s forwards;
+  .line-grow {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Sub-copy */
-  .tgs-sub {
-    font-family: 'Albert Sans', sans-serif;
-    font-size: clamp(0.75rem, 1.6vw, 0.875rem);
-    font-weight: 400;
-    line-height: 1.75;
-    color: rgba(240, 237, 232, 0.65);
-    max-width: 460px;
-    margin: 0;
-    opacity: 0;
-    text-wrap: balance;
-  }
-  .tgs-sub.tgs-animate {
-    animation: tgs-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
-  }
-
-  /* Stats row */
-  .tgs-stats {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin-top: 28px;
-    opacity: 0;
-    border: 1px solid rgba(200, 169, 110, 0.2);
-  }
-  .tgs-stats.tgs-animate {
-    animation: tgs-fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards;
-  }
-
-  .tgs-stat {
-    padding: 10px 24px;
-    text-align: center;
-  }
-  .tgs-stat + .tgs-stat {
-    border-left: 1px solid rgba(200, 169, 110, 0.2);
-  }
-  .tgs-stat-num {
-    font-family: 'Obviously', 'Albert Sans', sans-serif;
-    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-    font-weight: 300;
-    color: #F0EDE8;
-    letter-spacing: 0.02em;
-    display: block;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .tgs-stat-label {
-    font-family: 'Albert Sans', sans-serif;
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: #9C9890;
-    white-space: nowrap;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .tgs-eyebrow, .tgs-headline, .tgs-dot, .tgs-sub, .tgs-stats,
-    .tgs-estate, .tgs-rule, .tgs-grain { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .line-grow.active {
+    transform: scaleX(1);
   }
 `;
 
 const AboutHero = () => {
-  const heroRef = useRef(null);
+  const sectionRef = useRef(null);
+  const textRef = useRef(null);
+  const overlaysRef = useRef(null);
 
   useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-    const animatables = el.querySelectorAll("[data-animate]");
-    const raf = requestAnimationFrame(() => {
-      animatables.forEach((node) => node.classList.add("tgs-animate"));
-    });
-    return () => cancelAnimationFrame(raf);
+    const timer = setTimeout(() => {
+      if (overlaysRef.current) {
+        const structuralItems = overlaysRef.current.querySelectorAll(".init-trigger");
+        structuralItems.forEach((el) => el.classList.add("active"));
+      }
+      if (textRef.current) {
+        const elements = textRef.current.querySelectorAll(".animate-trigger");
+        elements.forEach((el) => el.classList.add("active"));
+      }
+    }, 300);
+
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      const totalScrollableDistance = windowHeight * 1.4; 
+      const currentProgress = Math.min(Math.max(-rect.top / totalScrollableDistance, 0), 1);
+      
+      sectionRef.current.style.setProperty("--progress", currentProgress);
+    };
+
+    const handleMouseMove = (e) => {
+      if (!sectionRef.current) return;
+
+      const { innerWidth, innerHeight } = window;
+      const xVector = (e.clientX / innerWidth) - 0.5;
+      const yVector = (e.clientY / innerHeight) - 0.5;
+
+      const maxTranslationDistance = 25; 
+      const targetMouseX = `${xVector * maxTranslationDistance}px`;
+      const targetMouseY = `${yVector * maxTranslationDistance}px`;
+
+      sectionRef.current.style.setProperty("--mouse-x", targetMouseX);
+      sectionRef.current.style.setProperty("--mouse-y", targetMouseY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   return (
     <>
-      <style>{styles}</style>
-      <header className="tgs-hero" ref={heroRef} role="banner">
+      <style>{designSystemStyles}</style>
+      
+      <section 
+        ref={sectionRef}
+        className="smooth-scroll-container relative w-full bg-[#F8F5F2] text-[#2D2A28] font-sans-editorial h-[240vh] selection:bg-[#B88272] selection:text-white"
+      >
+        <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-center px-6 md:px-16">
+          
+          <div className="kinetic-canvas-container" ref={overlaysRef}>
+            <div className="cinematic-border-frame init-trigger" />
+            <div className="architectural-crosshair crosshair-tl init-trigger" />
+            <div className="architectural-crosshair crosshair-tr init-trigger" />
+            <div className="architectural-crosshair crosshair-bl init-trigger" />
+            <div className="architectural-crosshair crosshair-br init-trigger" />
 
-        {/* Background */}
-        <img
-          src={building}
-          alt=""
-          className="tgs-bg-img"
-          loading="eager"
-          decoding="async"
-          aria-hidden="true"
-        />
-
-        {/* Grain texture */}
-        <div className="tgs-grain" aria-hidden="true" />
-
-        {/* Cinematic vignette */}
-        <div className="tgs-vignette" aria-hidden="true" />
-
-        {/* Gold base rule — signature element */}
-        <div className="tgs-rule" data-animate aria-hidden="true" />
-
-        {/* Estate strip */}
-        <div className="tgs-estate" data-animate aria-hidden="true">
-          <div className="tgs-estate-line" />
-          <span className="tgs-estate-label">Est. 1989 · Triveni Granite Studio</span>
-          <div className="tgs-estate-line" />
-        </div>
-
-        {/* Content */}
-        <div className="tgs-content">
-
-          <p className="tgs-eyebrow" data-animate>About Us</p>
-
-          <h1 className="tgs-headline" data-animate>
-            Forged Over<br />
-            <span className="tgs-headline-accent">Three Decades</span>
-          </h1>
-
-          <div className="tgs-dot" data-animate aria-hidden="true" />
-
-          <p className="tgs-sub" data-animate>
-            A legacy of precision engineering, uncompromising quality,
-            and global trust — carved in stone since 1989.
-          </p>
-
-          {/* Trust stats */}
-          <div className="tgs-stats" data-animate role="list" aria-label="Company milestones">
-            <div className="tgs-stat" role="listitem">
-              <span className="tgs-stat-num">35+</span>
-              <span className="tgs-stat-label">Years</span>
+            <div className="ambient-hero-title">
+              <span className="text-xs tracking-[0.6em] text-white/60 uppercase font-medium init-trigger clip-reveal">
+                The Architecture of Space
+              </span>
+              <h2 className="font-serif-luxury text-5xl md:text-7xl font-light tracking-wide italic init-trigger clip-reveal">
+                Triveni Studio
+              </h2>
             </div>
-            <div className="tgs-stat" role="listitem">
-              <span className="tgs-stat-num">40+</span>
-              <span className="tgs-stat-label">Countries</span>
-            </div>
-            <div className="tgs-stat" role="listitem">
-              <span className="tgs-stat-num">500+</span>
-              <span className="tgs-stat-label">Stone Varieties</span>
+
+            <div className="kinetic-canvas">
+              <img 
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=85&w=2200" 
+                alt="Premium architectural marble showroom interior" 
+                className="kinetic-image"
+                loading="eager"
+              />
+
+              <div 
+                className="absolute inset-x-0 bottom-16 flex flex-col items-center justify-center text-center text-white mix-blend-difference pointer-events-none transition-opacity duration-300"
+                style={{ opacity: `calc(1 - (var(--progress) * 6))` }}
+              >
+                <span className="text-[10px] tracking-[0.4em] uppercase font-light mb-2">Scroll to Unveil</span>
+                <div className="w-[1px] h-8 bg-white/40 relative overflow-hidden">
+                  <div className="absolute top-0 inset-x-0 h-1/2 bg-white animate-bounce" />
+                </div>
+              </div>
             </div>
           </div>
 
+          <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative h-full z-20 pointer-events-none">
+            
+            <div 
+              ref={textRef} 
+              className="lg:col-span-6 space-y-8 lg:pr-12 pointer-events-auto transition-all duration-300 ease-out"
+              style={{ 
+                opacity: `calc((var(--progress) - 0.25) * 4)`,
+                transform: `translate3d(0, calc((1 - var(--progress)) * 25px), 0)`
+              }}
+            >
+              <div className="space-y-4">
+                <p className="text-xs tracking-[0.5em] text-[#B88272] uppercase font-medium animate-trigger clip-reveal">
+                  About Triveni
+                </p>
+                <h1 className="font-serif-luxury text-4xl md:text-6xl lg:text-7xl tracking-tight leading-[1.05] font-light animate-trigger clip-reveal">
+                  Crafting Stone <br />
+                  <span className="italic">Into Legacy.</span>
+                </h1>
+              </div>
+
+              <div className="w-16 h-[1px] bg-[#B88272]/70 animate-trigger line-grow" />
+
+              <div className="max-w-md">
+                <p className="text-[14px] md:text-[15px] leading-relaxed text-[#2D2A28]/80 font-light tracking-wide animate-trigger clip-reveal">
+                  Over thirty-five years of curation, our quarry network spans the globe, delivering raw tectonic strength into refined architectural masterpieces.
+                </p>
+              </div>
+            </div>
+
+            <div className="lg:col-span-6 flex flex-col items-end w-full justify-center relative pointer-events-none">
+              <div className="w-full aspect-[4/3] invisible" />
+              
+              <div 
+                className="w-full grid grid-cols-3 gap-6 pt-6 mt-4 border-t border-[#A89A92]/20 transition-all duration-300"
+                style={{ 
+                  opacity: `calc((var(--progress) - 0.75) * 4)`,
+                  transform: `translate3d(0, calc((1 - var(--progress)) * 15px), 0)`
+                }}
+              >
+                <div>
+                  <p className="font-serif-luxury text-2xl md:text-3xl font-light">35</p>
+                  <p className="text-[9px] tracking-[0.15em] uppercase font-medium text-[#A89A92] mt-0.5">Years Active</p>
+                </div>
+                <div>
+                  <p className="font-serif-luxury text-2xl md:text-3xl font-light">500+</p>
+                  <p className="text-[9px] tracking-[0.15em] uppercase font-medium text-[#A89A92] mt-0.5">Varieties</p>
+                </div>
+                <div>
+                  <p className="font-serif-luxury text-2xl md:text-3xl font-light">40+</p>
+                  <p className="text-[9px] tracking-[0.15em] uppercase font-medium text-[#A89A92] mt-0.5">Channels</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
         </div>
-      </header>
+      </section>
     </>
   );
 };

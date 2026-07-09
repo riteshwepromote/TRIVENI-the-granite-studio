@@ -1,16 +1,16 @@
 import React from "react";
 
-import ovenFresh          from "../../assets/about/ovenFresh.png";
-import chillis            from "../../assets/about/chilislogo.png";
-import SindhiSweetsLogo   from "../../assets/about/SindhiSweetssssLogo.avif";
-import sociallogo         from "../../assets/about/social-logo.png";
-import StudioXoLogo       from "../../assets/about/StudioXoLogo.jpg";
-import doublelogo         from "../../assets/about/double-shot-logo.png";
-import GrainLogo          from "../../assets/about/GrainLogo.jpg";
-import SagarRatnamLogo    from "../../assets/about/SagarRatnamLogo.svg";
-import cafebeige          from "../../assets/about/Cafe beige.jpg";
-import awadhi             from "../../assets/about/Awadhi Centrallogo_edited.avif";
-import hira               from "../../assets/about/hiraImg.jpg";
+import ovenFresh from "../../assets/about/ovenFresh.png";
+import chillis from "../../assets/about/chilislogo.png";
+import SindhiSweetsLogo from "../../assets/about/SindhiSweetssssLogo.avif";
+import sociallogo from "../../assets/about/social-logo.png";
+import StudioXoLogo from "../../assets/about/StudioXoLogo.jpg";
+import doublelogo from "../../assets/about/double-shot-logo.png";
+import GrainLogo from "../../assets/about/GrainLogo.jpg";
+import SagarRatnamLogo from "../../assets/about/SagarRatnamLogo.svg";
+import cafebeige from "../../assets/about/Cafe beige.jpg";
+import awadhi from "../../assets/about/Awadhi Centrallogo_edited.avif";
+import hira from "../../assets/about/hiraImg.jpg";
 
 /*
   Split logos across two rows for dual-direction scroll.
@@ -19,21 +19,21 @@ import hira               from "../../assets/about/hiraImg.jpg";
   visual density even.
 */
 const ROW_A = [
-  { src: ovenFresh,        alt: "Oven Fresh"      },
-  { src: chillis,          alt: "Chili's"         },
-  { src: SindhiSweetsLogo, alt: "Sindhi Sweets"   },
-  { src: sociallogo,       alt: "Social"          },
-  { src: StudioXoLogo,     alt: "Studio Xo"       },
-  { src: doublelogo,       alt: "Double Shot"     },
+  { src: ovenFresh, alt: "Oven Fresh" },
+  { src: chillis, alt: "Chili's" },
+  { src: SindhiSweetsLogo, alt: "Sindhi Sweets" },
+  { src: sociallogo, alt: "Social" },
+  { src: StudioXoLogo, alt: "Studio Xo" },
+  { src: doublelogo, alt: "Double Shot" },
 ];
 
 const ROW_B = [
-  { src: GrainLogo,        alt: "Grain"           },
-  { src: SagarRatnamLogo,  alt: "Sagar Ratna"     },
-  { src: cafebeige,        alt: "Café Beige"      },
-  { src: awadhi,           alt: "Awadhi Central"  },
-  { src: hira,             alt: "Hira"            },
-  { src: ovenFresh,        alt: "Oven Fresh"      }, // visual balance repeat
+  { src: GrainLogo, alt: "Grain" },
+  { src: SagarRatnamLogo, alt: "Sagar Ratna" },
+  { src: cafebeige, alt: "Café Beige" },
+  { src: awadhi, alt: "Awadhi Central" },
+  { src: hira, alt: "Hira" },
+  { src: ovenFresh, alt: "Oven Fresh" }, // visual balance repeat
 ];
 
 const STYLES = `
@@ -144,7 +144,7 @@ const STYLES = `
     display: flex;
     align-items: center;
     justify-content: center;
-    filter: grayscale(1) opacity(0.5);
+    filter: grayscale(0.1) opacity(0.5);
     transition: filter 0.35s ease;
     cursor: default;
   }
@@ -206,6 +206,7 @@ function MarqueeRow({ logos, direction }) {
             <img src={logo.src} alt={logo.alt} loading="lazy" />
           </div>
         ))}
+        ``
       </div>
     </div>
   );
@@ -215,23 +216,22 @@ const BrandsServed = () => (
   <>
     <style>{STYLES}</style>
     <section className="bs-section" aria-label="Brands we have served">
-
       {/* Header */}
       <div className="bs-header">
         <span className="bs-eyebrow">Trusted By</span>
         <h2 className="bs-heading">Brands We've Served</h2>
         <div className="bs-rule" />
         <p className="bs-sub">
-          From flagship restaurant chains to boutique hospitality studios —
-          our surfaces are part of over a decade of iconic spaces across India.
+          From flagship restaurant chains to boutique hospitality studios — our
+          surfaces are part of over a decade of iconic spaces across India.
         </p>
       </div>
 
       {/* Dual-direction marquee — signature element */}
       <div className="bs-track-wrap" aria-hidden="true">
-        <div className="bs-fade-left"  />
+        <div className="bs-fade-left" />
         <div className="bs-fade-right" />
-        <MarqueeRow logos={ROW_A} direction="left"  />
+        <MarqueeRow logos={ROW_A} direction="left" />
         <div className="bs-row-gap" />
         <MarqueeRow logos={ROW_B} direction="right" />
       </div>
@@ -239,11 +239,10 @@ const BrandsServed = () => (
       {/* Disclaimer — whispered, not announced */}
       <div className="bs-disclaimer">
         <p>
-          Logos belong to their respective owners. Products supplied directly
-          or via channel partners.
+          Logos belong to their respective owners. Products supplied directly or
+          via channel partners.
         </p>
       </div>
-
     </section>
   </>
 );

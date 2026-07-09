@@ -14,7 +14,7 @@ const NAV_LINKS = [
   //     { label: "Certifications and Approvals", href: "/certifications" },
   //   ],
   // },
-  { name: "Legacy", href: "/legacy" },
+  { name: "About", href: "/about" },
 
   {
     name: "Projects",
