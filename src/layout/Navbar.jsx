@@ -61,7 +61,7 @@ const NAV_LINKS = [
           { label: "Ispira", href: "/ispira" },
           { label: "Arvia", href: "/arvia" },
           { label: "Marfil", href: "/monolith" },
-          { label: "Marfil", href: "/" },
+          { label: "Monolith", href: "/" },
         ],
       },
       {
@@ -77,7 +77,7 @@ const NAV_LINKS = [
       },
     ],
   },
-  
+
   { name: "Blogs", href: "/blogs" },
   { name: "Contact", href: "/contact" },
 ];
@@ -219,48 +219,48 @@ const Navbar = () => {
         </button>
 
         {/* PERFECTLY BOUNDED PRODUCTS MEGA MENU SURFACE PANEL */}
-{productsLink && (
-  <div
-    onMouseEnter={() => setHoveredLink("Products")}
-    onMouseLeave={() => setHoveredLink(null)}
-    className={`absolute left-5 right-5 md:left-10 md:right-10 lg:left-[120px] lg:right-[120px] top-[64px] rounded-b-xl border border-t-0 border-[#E4D4C4]/60 bg-white shadow-[0_20px_40px_rgba(20,28,58,0.1)] transition-all duration-300 ease-in-out hidden lg:block ${
-      hoveredLink === "Products"
-        ? "opacity-100 translate-y-0 pointer-events-auto"
-        : "opacity-0 -translate-y-2 pointer-events-none"
-    }`}
-  >
-    <div className="p-8">
-      {/* Changed layout from grid-cols-3 to grid-cols-5 so all 5 sections align perfectly in one single row */}
-      <div className="grid grid-cols-5 gap-6">
-        {productsLink.megaSections.map((section) => (
-          <div key={section.title} className="flex flex-col">
-            <span className="font-['AlbertSans'] text-[11px] uppercase tracking-[0.15em] font-bold text-[#C67D55] mb-3 pb-1.5 border-b border-[#E4D4C4]/30">
-              {section.title}
-            </span>
-            <div className="flex flex-col gap-1">
-              {section.items.map((item) => (
-                <NavLink
-                  key={item.label}
-                  to={item.href}
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    `font-['AlbertSans'] text-[13px] font-normal py-1.5 transition-colors hover:text-[#C67D55] ${
-                      isActive
-                        ? "text-[#C67D55] font-medium"
-                        : "text-[#141C3A]"
-                    }`
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
+        {productsLink && (
+          <div
+            onMouseEnter={() => setHoveredLink("Products")}
+            onMouseLeave={() => setHoveredLink(null)}
+            className={`absolute left-5 right-5 md:left-10 md:right-10 lg:left-[120px] lg:right-[120px] top-[64px] rounded-b-xl border border-t-0 border-[#E4D4C4]/60 bg-white shadow-[0_20px_40px_rgba(20,28,58,0.1)] transition-all duration-300 ease-in-out hidden lg:block ${
+              hoveredLink === "Products"
+                ? "opacity-100 translate-y-0 pointer-events-auto"
+                : "opacity-0 -translate-y-2 pointer-events-none"
+            }`}
+          >
+            <div className="p-8">
+              {/* Changed layout from grid-cols-3 to grid-cols-5 so all 5 sections align perfectly in one single row */}
+              <div className="grid grid-cols-5 gap-6">
+                {productsLink.megaSections.map((section) => (
+                  <div key={section.title} className="flex flex-col">
+                    <span className="font-['AlbertSans'] text-[11px] uppercase tracking-[0.15em] font-bold text-[#C67D55] mb-3 pb-1.5 border-b border-[#E4D4C4]/30">
+                      {section.title}
+                    </span>
+                    <div className="flex flex-col gap-1">
+                      {section.items.map((item) => (
+                        <NavLink
+                          key={item.label}
+                          to={item.href}
+                          onClick={closeMenu}
+                          className={({ isActive }) =>
+                            `font-['AlbertSans'] text-[13px] font-normal py-1.5 transition-colors hover:text-[#C67D55] ${
+                              isActive
+                                ? "text-[#C67D55] font-medium"
+                                : "text-[#141C3A]"
+                            }`
+                          }
+                        >
+                          {item.label}
+                        </NavLink>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        ))}
-      </div>
-    </div>
-  </div>
-)}
+        )}
       </div>
 
       {/* Mobile Menu Options Dropdown */}

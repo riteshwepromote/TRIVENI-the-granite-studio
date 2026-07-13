@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 // Note: In your production build, ensure you install and import:
 // import { gsap } from 'gsap';
 // import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -57,7 +57,7 @@ const chapters = [
     description:
       "A state-of-the-art manufacturing facility strengthened our commitment to quality and innovation.",
     bgImage:
-      "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1920&q=80",
+      "https://images.unsplash.com/photo-zxcz1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1920&q=80",
     animationClass: "chapter-reveal",
   },
   {

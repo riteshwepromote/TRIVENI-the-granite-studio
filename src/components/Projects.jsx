@@ -40,41 +40,53 @@ export default function Projects({
   galleryImages = [],
   recentProjects = [],
   applications = [
-    { 
-      name: "Kitchen Countertops", 
+    {
+      name: "Kitchen Countertops",
       image: kichenUsecase,
-      description: "Engineered for high-impact durability and heat resistance, custom-tailored into seamless, zero-tolerance surfaces.",
-      details: "Recommended Materials: Quartz, Premium Granite. Features: Stain-proof sealing, seamless joint matching."
+      description:
+        "Engineered for high-impact durability and heat resistance, custom-tailored into seamless, zero-tolerance surfaces.",
+      details:
+        "Recommended Materials: Quartz, Premium Granite. Features: Stain-proof sealing, seamless joint matching.",
     },
-    { 
-      name: "Staircases", 
+    {
+      name: "Staircases",
       image: staircaseUsecase,
-      description: "Imccably molded stone slabs with profile-milled edges creating a grand architectural transit space.",
-      details: "Recommended Materials: Imported Marble, Hard Granite. Features: Anti-skid groove lines, bullnose/chamfer edge profiles."
+      description:
+        "Imccably molded stone slabs with profile-milled edges creating a grand architectural transit space.",
+      details:
+        "Recommended Materials: Imported Marble, Hard Granite. Features: Anti-skid groove lines, bullnose/chamfer edge profiles.",
     },
-    { 
-      name: "Wall Cladding", 
+    {
+      name: "Wall Cladding",
       image: wallCladding,
-      description: "Large-format bookmatched book facings that transform standard structural partitions into high-end art statements.",
-      details: "Recommended Materials: Italian Marble, Onyx. Features: Mechanical dry-fixing, integrated backlit options."
+      description:
+        "Large-format bookmatched book facings that transform standard structural partitions into high-end art statements.",
+      details:
+        "Recommended Materials: Italian Marble, Onyx. Features: Mechanical dry-fixing, integrated backlit options.",
     },
-    { 
-      name: "Flooring", 
+    {
+      name: "Flooring",
       image: flooringUsecase,
-      description: "Flawless, mirror-polished expansive floor spreads designed to endure heavy footfalls while preserving premium gloss reflection.",
-      details: "Recommended Materials: Premium Marble, Granite. Features: Precision diamond polishing, high-uniformity layout mapping."
+      description:
+        "Flawless, mirror-polished expansive floor spreads designed to endure heavy footfalls while preserving premium gloss reflection.",
+      details:
+        "Recommended Materials: Premium Marble, Granite. Features: Precision diamond polishing, high-uniformity layout mapping.",
     },
-    { 
-      name: "Bathrooms", 
+    {
+      name: "Bathrooms",
       image: washroomUsecase,
-      description: "Moisture-resistant luxury mappings covering vanity counters, anti-slip shower trays, and floor-to-ceiling ambient stone tiling.",
-      details: "Recommended Materials: Quartzite, Marble. Features: Specialized water-repellent treatments, custom vanity edge cutting."
+      description:
+        "Moisture-resistant luxury mappings covering vanity counters, anti-slip shower trays, and floor-to-ceiling ambient stone tiling.",
+      details:
+        "Recommended Materials: Quartzite, Marble. Features: Specialized water-repellent treatments, custom vanity edge cutting.",
     },
     {
       name: "Commercial Spaces",
       image: commercialUsecase,
-      description: "High-grade premium stone infrastructure optimized for executive reception lounges, workspaces, and heavy-use corporate lobbies.",
-      details: "Recommended Materials: Industrial Granite, Engineered Quartz. Features: High traffic durability, scratch-resistant finishes."
+      description:
+        "High-grade premium stone infrastructure optimized for executive reception lounges, workspaces, and heavy-use corporate lobbies.",
+      details:
+        "Recommended Materials: Industrial Granite, Engineered Quartz. Features: High traffic durability, scratch-resistant finishes.",
     },
   ],
   testimonials = [
@@ -93,7 +105,7 @@ export default function Projects({
   const mainRef = useRef(null);
   const featuredSectionRef = useRef(null);
   const lenisRef = useRef(null);
-  
+
   // State to hold the actively viewed project inside the modal popup
   const [activeProject, setActiveProject] = useState(null);
   // State to hold the actively viewed application showcase inside the modal popup
@@ -727,15 +739,15 @@ export default function Projects({
 
       {/* ================= EDITORIAL DIALOG MODAL OVERLAY (PROJECTS) ================= */}
       {activeProject && (
-        <div 
+        <div
           className="fixed inset-0 bg-[#2D2A28]/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4 sm:p-6 transition-opacity duration-300"
           onClick={() => setActiveProject(null)}
         >
-          <div 
+          <div
             className="bg-[#F8F5F2] text-[#2D2A28] max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative border border-[#E5DDD6] flex flex-col md:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
-            <button 
+            <button
               onClick={() => setActiveProject(null)}
               className="absolute top-4 right-4 text-[#2D2A28] hover:text-[#B88272] transition-colors z-50 p-2 bg-[#F8F5F2]/80 backdrop-blur-xs font-mono text-xs uppercase tracking-widest border border-[#E5DDD6]"
             >
@@ -743,9 +755,9 @@ export default function Projects({
             </button>
 
             <div className="md:w-1/2 min-h-[300px] md:h-auto relative bg-stone-200 overflow-hidden">
-              <img 
-                src={activeProject.image} 
-                alt={activeProject.title} 
+              <img
+                src={activeProject.image}
+                alt={activeProject.title}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#2D2A28]/40 via-transparent pointer-events-none" />
@@ -761,17 +773,24 @@ export default function Projects({
                 </h2>
                 <hr className="border-[#E5DDD6] w-12" />
                 <p className="text-sm font-light text-[#5A5552] leading-relaxed">
-                  {activeProject.story || "A custom tailored architectural integration built with uncompromising material verification, custom sizing alignments, and a continuous high-gloss polished premium finish."}
+                  {activeProject.story ||
+                    "A custom tailored architectural integration built with uncompromising material verification, custom sizing alignments, and a continuous high-gloss polished premium finish."}
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4 pt-6 border-t border-[#E5DDD6] font-mono text-xs text-[#5A5552]">
                 <div>
-                  <span className="text-[#B88272] block font-bold text-[9px] tracking-widest uppercase mb-1">MATERIAL ARCHIVE</span>
-                  <span className="font-sans font-medium text-[#2D2A28]">{activeProject.material || "Premium Selection"}</span>
+                  <span className="text-[#B88272] block font-bold text-[9px] tracking-widest uppercase mb-1">
+                    MATERIAL ARCHIVE
+                  </span>
+                  <span className="font-sans font-medium text-[#2D2A28]">
+                    {activeProject.material || "Premium Selection"}
+                  </span>
                 </div>
                 <div>
-                  <span className="text-[#B88272] block font-bold text-[9px] tracking-widest uppercase mb-1">SURFACE FINISH</span>
+                  <span className="text-[#B88272] block font-bold text-[9px] tracking-widest uppercase mb-1">
+                    SURFACE FINISH
+                  </span>
                   <span>High Gloss Mirror Finish</span>
                 </div>
               </div>
@@ -782,15 +801,15 @@ export default function Projects({
 
       {/* ================= EDITORIAL DIALOG MODAL OVERLAY (APPLICATION SHOWCASE) ================= */}
       {activeApp && (
-        <div 
+        <div
           className="fixed inset-0 bg-[#2D2A28]/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4 sm:p-6 transition-opacity duration-300"
           onClick={() => setActiveApp(null)}
         >
-          <div 
+          <div
             className="bg-[#F8F5F2] text-[#2D2A28] max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative border border-[#E5DDD6] flex flex-col md:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
-            <button 
+            <button
               onClick={() => setActiveApp(null)}
               className="absolute top-4 right-4 text-[#2D2A28] hover:text-[#B88272] transition-colors z-50 p-2 bg-[#F8F5F2]/80 backdrop-blur-xs font-mono text-xs uppercase tracking-widest border border-[#E5DDD6]"
             >
@@ -798,9 +817,9 @@ export default function Projects({
             </button>
 
             <div className="md:w-1/2 min-h-[300px] md:h-auto relative bg-stone-200 overflow-hidden">
-              <img 
-                src={activeApp.image} 
-                alt={activeApp.name} 
+              <img
+                src={activeApp.image}
+                alt={activeApp.name}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#2D2A28]/40 via-transparent pointer-events-none" />
@@ -816,15 +835,19 @@ export default function Projects({
                 </h2>
                 <hr className="border-[#E5DDD6] w-12" />
                 <p className="text-sm font-light text-[#5A5552] leading-relaxed">
-                  {activeApp.description || "Premium edge milling, structural back-reinforcements, and precision seamless cut-outs customized to fit exact space templates beautifully."}
+                  {activeApp.description ||
+                    "Premium edge milling, structural back-reinforcements, and precision seamless cut-outs customized to fit exact space templates beautifully."}
                 </p>
               </div>
 
               <div className="pt-6 border-t border-[#E5DDD6] font-mono text-xs text-[#5A5552] space-y-2">
                 <div>
-                  <span className="text-[#B88272] block font-bold text-[9px] tracking-widest uppercase mb-1">ARCHITECTURAL GUIDELINES</span>
+                  <span className="text-[#B88272] block font-bold text-[9px] tracking-widest uppercase mb-1">
+                    ARCHITECTURAL GUIDELINES
+                  </span>
                   <span className="font-sans font-normal text-[#2D2A28] text-xs block leading-relaxed">
-                    {activeApp.details || "Custom execution tailored dynamically by our specialized internal stone artisans."}
+                    {activeApp.details ||
+                      "Custom execution tailored dynamically by our specialized internal stone artisans."}
                   </span>
                 </div>
               </div>

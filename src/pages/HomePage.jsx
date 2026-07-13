@@ -10,9 +10,9 @@ const HomePage = () => {
     <>
       <HeroSection />
       <LegacySection />
-      <CollectionsSection />
-      <FeaturedCollections />
-      <BlogSection />
+      {/* <CollectionsSection /> */}
+      {/* <FeaturedCollections /> */}
+      {/* <BlogSection /> */}
       <ContactCTA />
     </>
   );
