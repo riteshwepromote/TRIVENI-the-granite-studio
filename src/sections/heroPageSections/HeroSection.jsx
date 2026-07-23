@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import heroScroledVideo from "../../assets/optimizedHeroVideo.mp4";
+import heroScroledVideo from "../../assets/riteshworkkk.mp4";
+// import heroScroledVideo from "../../assets/optimizedHeroVideo.mp4";
 
 gsap.registerPlugin(ScrollTrigger);
 

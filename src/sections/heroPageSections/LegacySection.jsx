@@ -1,310 +1,325 @@
-import { useEffect, useRef } from "react";
-// Note: In your production build, ensure you install and import:
-// import { gsap } from 'gsap';
-// import { ScrollTrigger } from 'gsap/ScrollTrigger';
-// import Lenis from '@studio-freight/lenis';
-import triveniImg from "../../assets/heroImg.jpg";
+import React, { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "@studio-freight/lenis";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const chapters = [
   {
     id: "01",
     year: "1989",
     location: "DELHI",
     title: "The foundation was laid.",
-    description:
-      "A vision to bring exceptional stone craftsmanship to India began in Delhi.",
-    bgImage:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80",
-    animationClass: "chapter-zoom",
+    description: "A vision to bring exceptional stone craftsmanship to India began in Delhi.",
+    bgImage: "https://ik.imagekit.io/4cj6kauug/Triveni/delhi1989.png",
   },
   {
     id: "02",
     year: "1992",
     location: "KATHMANDU, NEPAL",
     title: "Crossing borders.",
-    description:
-      "Triveni expanded its reach beyond India, establishing a presence in Nepal.",
-    bgImage:
-      "https://images.unsplash.com/photo-1486915309851-b0cc1f8a0084?auto=format&fit=crop&w=1920&q=80",
-    animationClass: "chapter-parallax",
+    description: "Triveni expanded its reach beyond India, establishing a presence in Nepal.",
+    bgImage: "https://ik.imagekit.io/4cj6kauug/Triveni/nepal",
   },
   {
     id: "03",
     year: "1994",
     location: "ABU ROAD, RAJASTHAN",
     title: "Closer to the source.",
-    description:
-      "Abu Road became a strategic hub, connecting craftsmanship with natural resources.",
-    bgImage:
-      "https://images.unsplash.com/photo-1590069261209-f8e9b8642343?auto=format&fit=crop&w=1920&q=80",
-    animationClass: "chapter-split",
+    description: "Abu Road became a strategic hub, connecting craftsmanship with natural resources.",
+    bgImage: "https://images.unsplash.com/photo-1590069261209-f8e9b8642343?auto=format&fit=crop&w=1920&q=80",
   },
   {
     id: "04",
     year: "2005",
     location: "NEW OUTLET, DELHI",
     title: "Expanding the experience.",
-    description:
-      "A new destination where architects, designers, and homeowners discovered premium stone collections.",
-    bgImage:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=80",
-    animationClass: "chapter-gallery",
+    description: "A new destination where architects, designers, and homeowners discovered premium stone collections.",
+    bgImage: "https://ik.imagekit.io/4cj6kauug/Triveni/Delhi%202005",
   },
   {
     id: "05",
     year: "2017",
     location: "FACTORY ESTABLISHMENT, ABU ROAD",
     title: "Scaling excellence.",
-    description:
-      "A state-of-the-art manufacturing facility strengthened our commitment to quality and innovation.",
-    bgImage:
-      "https://images.unsplash.com/photo-zxcz1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1920&q=80",
-    animationClass: "chapter-reveal",
+    description: "A state-of-the-art manufacturing facility strengthened our commitment to quality and innovation.",
+    bgImage: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1920&q=80",
   },
   {
     id: "06",
     year: "2022",
     location: "MOHALI",
     title: "Bringing luxury closer.",
-    description:
-      "Expanding into Punjab with a new destination for timeless surfaces and contemporary design.",
-    bgImage:
-      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1920&q=80",
-    animationClass: "chapter-fade",
+    description: "Expanding into Punjab with a new destination for timeless surfaces and contemporary design.",
+    bgImage: "https://ik.imagekit.io/4cj6kauug/Triveni/triveni2022.webp",
   },
   {
     id: "07",
     year: "2025",
     location: "DUBAI",
     title: "Global horizons.",
-    description:
-      "Triveni enters Dubai, marking a new chapter in its international journey.",
-    bgImage:
-      "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1920&q=80",
-    animationClass: "chapter-gold",
+    description: "Triveni enters Dubai, marking a new chapter in its international journey.",
+    bgImage: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1920&q=80",
   },
 ];
 
-export default function TriveniLegacyLight() {
+export default function TriveniLegacyScrollytelling() {
   const containerRef = useRef(null);
 
-  useEffect(() => {
-    // 1. Smooth Scrolling initialization (Lenis)
-    // const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-    // function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    // requestAnimationFrame(raf);
+  useLayoutEffect(() => {
+    // 1. Initialize Lenis for Smooth Cinematic Scrolling
+    const lenis = new Lenis({
+      duration: 1.5,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+    });
 
-    // 2. GSAP & ScrollTrigger Hooks
-    // gsap.registerPlugin(ScrollTrigger);
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
 
-    // Layout hook for cinematic zoom of Chapter images:
-    // gsap.utils.toArray('.chapter-sec').forEach(panel => {
-    //   gsap.fromTo(panel.querySelector('.cinematic-img'), { scale: 1 }, {
-    //     scale: 1.15, scrollTrigger: { trigger: panel, start: "top bottom", end: "bottom top", scrub: true }
-    //   });
-    // });
+    // 2. GSAP Animations Setup
+    const ctx = gsap.context(() => {
+      // Parallax for all images inside the unified cards
+      gsap.utils.toArray(".img-wrapper").forEach((wrapper) => {
+        const img = wrapper.querySelector(".img-parallax");
+        if (img) {
+          gsap.to(img, {
+            yPercent: 15,
+            ease: "none",
+            scrollTrigger: {
+              trigger: wrapper,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+        }
+      });
+
+      // Staggered text reveals inside cards
+      gsap.utils.toArray(".reveal-up").forEach((elem) => {
+        gsap.fromTo(
+          elem,
+          { y: 50, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: elem,
+              start: "top 90%",
+            },
+          }
+        );
+      });
+
+      // Final Map Journey Animation
+      const mapPath = document.querySelector(".map-path");
+      if (mapPath) {
+        const length = mapPath.getTotalLength();
+        gsap.set(mapPath, { strokeDasharray: length, strokeDashoffset: length });
+        
+        gsap.to(mapPath, {
+          strokeDashoffset: 0,
+          duration: 2,
+          ease: "power2.inOut",
+          scrollTrigger: {
+            trigger: ".finale-section",
+            start: "top center",
+            end: "bottom bottom",
+            scrub: 1.5,
+          },
+        });
+      }
+
+      // Final Map Node Reveals
+      gsap.fromTo(
+        ".map-node",
+        { scale: 0, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.3,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: ".finale-section",
+            start: "top 40%",
+            end: "bottom 80%",
+            scrub: 1,
+          },
+        }
+      );
+    }, containerRef);
 
     return () => {
-      // Cleanups
-      // lenis.destroy();
+      lenis.destroy();
+      ctx.revert();
     };
   }, []);
 
   return (
     <div
       ref={containerRef}
-      className="bg-[#F8F5F2] text-[#2D2A28] font-['Inter'] selection:bg-[#B88272] selection:text-[#F8F5F2] overflow-x-hidden antialiased"
+      className="bg-[#0b0b0b] text-[#F4F1ED] font-sans selection:bg-[#A88771] selection:text-[#F4F1ED] overflow-x-hidden"
     >
-      {/* SECTION 1: HERO */}
-      <section className="relative h-50vh w-full flex items-center justify-center overflow-hidden bg-[#F8F5F2] pt-20">
-        {/* Background Layer with Subtle Matte Blend Overlays */}
-        <div className="absolute inset-0 z-0 overflow-hidden opacity-30 transform scale-105 transition-transform duration-[10000ms] hover:scale-100 mix-blend-multiply">
-          <img
-            src={triveniImg}
-            alt="Slow-motion Marble Quarry Background"
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        {/* Ambient organic stone texture overlay effect */}
-        <div className="absolute inset-0 z-10 pointer-events-none opacity-[0.04] mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')]" />
-
-        {/* Content Box */}
-        <div className="relative z-20 max-w-5xl mx-auto px-6 text-center space-y-8">
-          <span className="text-[#B88272] font-semibold tracking-[0.4em] uppercase text-xs md:text-sm block mb-4">
-            TRIVENI GRANITE STORE
+      {/* REFINED ARCHITECTURAL HERO SECTION */}
+      <section className="relative min-h-[70vh] w-full flex flex-col items-center justify-center px-6 pt-20 pb-16 bg-[#0b0b0b]">
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+          <span className="text-[11px] md:text-xs tracking-[0.4em] uppercase text-[#A88771] font-medium block">
+            Triveni Legacy
           </span>
-
-          <h1 className="font-['Cormorant_Garamond'] text-5xl md:text-8xl font-light tracking-tight leading-none text-balance text-[#2D2A28]">
-            Nature's Finest Stone.
-            <br />
-            <span className="italic text-[#B88272]">
-              Crafted for Timeless Spaces.
-            </span>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-light tracking-tight leading-[1.1] text-[#F4F1ED]">
+            The Journey <span className="italic font-normal text-[#C5A894]">Through Time.</span>
           </h1>
-
-          <p className="max-w-3xl mx-auto text-sm md:text-base text-[#2D2A28]/80 tracking-wide font-light leading-relaxed pt-4">
-            For decades, Triveni Granite Store has supplied premium granite,
-            marble, quartz, and natural stone solutions for homes, commercial
-            spaces, and architectural masterpieces. Every slab is carefully
-            selected to deliver exceptional beauty, durability, and lasting
-            value.
+          <p className="text-sm md:text-base text-gray-400 font-light max-w-xl mx-auto leading-relaxed pt-2">
+            A chronological exploration of architecture, craftsmanship, and global expansion since 1989.
           </p>
-          <div className="pt-12">
-            <div className="w-[1px] h-24 bg-gradient-to-b from-[#B88272] to-transparent mx-auto" />
-          </div>
         </div>
       </section>
 
-      {/* SECTION 2: IMMERSIVE SCROLL JOURNEY CHAPTERS */}
-      <main className="relative z-20">
-        {chapters.map((chapter) => (
-          <section
-            key={chapter.id}
-            className="chapter-sec relative min-h-screen w-full flex items-center justify-center py-24 px-6 md:px-16 border-b border-[#A89A92]/20 snap-start bg-[#F8F5F2]"
-          >
-            {/* Main Visual Container */}
-            <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              {/* Image Frame Wrapper (75% aspect ratio layout) */}
-              <div className="relative lg:col-span-9 w-full aspect-[16/9] xl:aspect-[21/9] overflow-hidden group border border-[#A89A92]/10 bg-[#A89A92]/5 shadow-sm">
-                {/* Visual Reveal Soft Shade */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#2D2A28]/10 via-transparent to-transparent z-10 opacity-40 pointer-events-none" />
+      {/* MAIN TIMELINE: Unified "Immersive Cinematic Reveal" Style */}
+      <main className="relative z-20 pb-32 pt-16 space-y-24 md:space-y-40">
+        {chapters.map((chapter, index) => {
+          const isEven = index % 2 === 0;
 
-                {/* Cinematic Image Asset */}
-                <img
-                  src={chapter.bgImage}
-                  alt={`Triveni Legacy ${chapter.location}`}
-                  className="cinematic-img w-full h-full object-cover filter brightness-[0.98] contrast-[1.02] transition-transform duration-700 ease-out group-hover:scale-103"
-                />
+          return (
+            <section key={chapter.id} className="relative w-full flex items-center justify-center px-4 md:px-12">
+              <div className="img-wrapper relative w-full max-w-[1500px] h-[75vh] md:h-[85vh] overflow-hidden rounded-[2rem] md:rounded-[2.5rem] group">
+                
+                {/* Parallax Image Background (Clean, No Opacity / No Overlays) */}
+                <div className="absolute inset-0 z-0 bg-[#111]">
+                  <img
+                    src={chapter.bgImage}
+                    alt={chapter.title}
+                    className="img-parallax w-full h-[135%] object-cover -top-[15%] relative"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
 
-                {/* Floating Chapter Stamp Tag inside image viewport */}
-                <div className="absolute top-6 left-6 z-20 bg-[#F8F5F2]/90 backdrop-blur-md border border-[#B88272]/20 px-4 py-2">
-                  <span className="font-['Bodoni_Moda'] text-xs tracking-[0.2em] text-[#B88272] font-medium">
-                    CH. // {chapter.id}
+                {/* Chapter Number Indicator */}
+                <div className={`absolute top-6 md:top-10 ${isEven ? 'right-6 md:right-10' : 'left-6 md:left-10'} z-10 hidden md:block`}>
+                  <span className="text-sm tracking-widest text-white font-mono">
+                    {chapter.id} <span className="mx-1 text-[#A88771]">/</span> 07
                   </span>
                 </div>
-              </div>
 
-              {/* Minimalist Editorial Content Column */}
-              <div className="lg:col-span-3 space-y-6 lg:pl-4 self-center">
-                <div className="space-y-1">
-                  <h2 className="font-['Bodoni_Moda'] text-5xl md:text-7xl font-light text-[#B88272] tracking-tighter leading-none">
-                    {chapter.year}
-                  </h2>
-                  <h3 className="font-['Inter'] font-semibold tracking-[0.25em] text-xs text-[#A89A92] uppercase">
-                    {chapter.location}
-                  </h3>
+                {/* Text Content Overlay */}
+                <div className={`absolute inset-0 w-full p-8 md:p-16 flex items-end ${isEven ? 'justify-start' : 'justify-start md:justify-end'}`}>
+                  <div className="reveal-up relative z-10 max-w-xl text-left">
+                    
+                    {/* Glassmorphic Year Pill */}
+                    <div className="inline-flex items-center border border-[#A88771]/30 bg-black px-5 py-1.5 rounded-full mb-4 md:mb-6 shadow-lg">
+                      <span className="text-xl md:text-2xl text-[#C5A894] font-semibold tracking-wider font-mono">{chapter.year}</span>
+                    </div>
+                    
+                    {/* Location Subheading */}
+                    <h4 className="text-[11px] md:text-xs tracking-[0.35em] uppercase text-[#D5C2B3] mb-3 font-medium">
+                      {chapter.location}
+                    </h4>
+                    
+                    {/* Title & Description */}
+                    <h3 className="text-3xl md:text-5xl mb-4 text-white leading-[1.15] font-light">
+                      {chapter.title}
+                    </h3>
+                    <p className="font-light text-gray-300 text-sm md:text-base leading-relaxed">
+                      {chapter.description}
+                    </p>
+
+                  </div>
                 </div>
 
-                <hr className="w-12 border-[#B88272]/50" />
-
-                <div className="space-y-3">
-                  <h4 className="font-['Cormorant_Garamond'] text-2xl font-medium tracking-tight text-[#2D2A28] leading-snug">
-                    {chapter.title}
-                  </h4>
-                  <p className="text-sm text-[#2D2A28]/70 leading-relaxed font-light">
-                    {chapter.description}
-                  </p>
-                </div>
               </div>
-            </div>
-          </section>
-        ))}
+            </section>
+          );
+        })}
       </main>
 
-      {/* SECTION 3: GRAND FINALE */}
-      <section className="relative min-h-screen w-full bg-[#F8F5F2] flex flex-col justify-between py-24 px-6 overflow-hidden border-b border-[#A89A92]/20">
-        {/* World Map Texture Base Layer */}
-        <div className="absolute inset-0 opacity-[0.03] mix-blend-multiply pointer-events-none bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1920&q=80')] bg-center bg-no-repeat bg-cover" />
-
-        {/* Global Journey Constellation Line Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-40 z-0">
-          <svg
-            className="w-full h-full max-w-5xl max-h-[500px]"
-            viewBox="0 0 800 400"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M100,250 Q200,100 300,220 T500,180 T700,120"
-              stroke="#B88272"
-              strokeWidth="1.5"
-              strokeDasharray="6 4"
-            />
-            <circle cx="100" cy="250" r="4" fill="#B88272" />
-            <circle cx="300" cy="220" r="4" fill="#A89A92" />
-            <circle cx="500" cy="180" r="4" fill="#A89A92" />
-            <circle cx="700" cy="120" r="5" fill="#B88272" />
-          </svg>
-        </div>
-
-        {/* Dynamic Connected Node Checklist - Luxury Typography */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full text-center pt-8">
-          <div className="inline-flex flex-wrap items-center justify-center gap-3 md:gap-6 px-6 py-3 bg-[#F8F5F2]/80 backdrop-blur-md rounded-full border border-[#A89A92]/30 text-[10px] md:text-xs tracking-[0.2em] font-medium text-[#2D2A28]/80 uppercase">
-            <span>Delhi</span> <span className="text-[#B88272]">→</span>
-            <span>Kathmandu</span> <span className="text-[#B88272]">→</span>
-            <span>Abu Road</span> <span className="text-[#B88272]">→</span>
-            <span>Delhi</span> <span className="text-[#B88272]">→</span>
-            <span>Abu Road</span> <span className="text-[#B88272]">→</span>
-            <span>Mohali</span> <span className="text-[#B88272]">→</span>
-            <span className="text-[#B88272] font-bold">Dubai</span>
-          </div>
-        </div>
-
-        {/* Core Finale Messaging Block */}
-        <div className="relative z-10 max-w-4xl mx-auto w-full text-center my-auto space-y-6 px-4">
-          <h2 className="font-['Cormorant_Garamond'] text-4xl md:text-7xl font-light tracking-tight leading-tight text-[#2D2A28]">
-            36 Years of Legacy.
-            <br />
-            <span className="italic text-[#B88272]">
-              Countless Spaces. One Commitment.
-            </span>
-          </h2>
-        </div>
-
-        {/* Premium Data Counters Grid Matrix */}
-        <div className="relative z-10 max-w-5xl mx-auto w-full grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 border-t border-[#A89A92]/30 pt-12">
-          <div className="text-center space-y-1">
-            <p className="font-['Bodoni_Moda'] text-3xl md:text-5xl font-light text-[#B88272] tracking-tight">
-              1989 — 2025
-            </p>
-            <p className="text-[11px] font-medium tracking-[0.2em] text-[#A89A92] uppercase">
-              Timeline Horizon
-            </p>
+      {/* FINALE SECTION: The Animated Journey */}
+      <section className="finale-section relative min-h-screen w-full bg-[#070707] text-[#F4F1ED] pt-32 pb-24 overflow-hidden rounded-t-[3rem] md:rounded-t-[4rem]">
+        
+        <div className="relative z-10 max-w-6xl mx-auto px-6 flex flex-col items-center">
+          
+          <div className="reveal-up text-center mb-16 space-y-3">
+            <h4 className="text-[11px] tracking-[0.4em] uppercase text-[#A88771] font-medium">The Constellation of Craft</h4>
+            <h2 className="text-4xl md:text-6xl font-light text-white">
+              An Expanding <span className="italic font-normal text-[#C5A894]">Legacy</span>
+            </h2>
           </div>
 
-          <div className="text-center space-y-1">
-            <p className="font-['Bodoni_Moda'] text-3xl md:text-5xl font-light text-[#B88272] tracking-tight">
-              7
-            </p>
-            <p className="text-[11px] font-medium tracking-[0.2em] text-[#A89A92] uppercase">
-              Global Locations
-            </p>
+          {/* Abstract SVG Journey Map */}
+          <div className="w-full max-w-4xl relative h-[280px] md:h-[360px] mb-20">
+            <svg
+              className="w-full h-full overflow-visible"
+              viewBox="0 0 1000 400"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              {/* The Path */}
+              <path
+                className="map-path"
+                d="M50,200 Q150,50 250,150 T450,250 T650,150 T850,200 T950,100"
+                stroke="#A88771"
+                strokeWidth="2"
+                strokeLinecap="round"
+                fill="none"
+              />
+              
+              {/* The Nodes */}
+              <g className="map-node">
+                <circle cx="50" cy="200" r="5" fill="#F4F1ED" />
+                <text x="50" y="230" fill="#D5C2B3" fontSize="11" textAnchor="middle" letterSpacing="0.15em">DELHI</text>
+              </g>
+              <g className="map-node">
+                <circle cx="250" cy="150" r="5" fill="#F4F1ED" />
+                <text x="250" y="180" fill="#D5C2B3" fontSize="11" textAnchor="middle" letterSpacing="0.15em">KATHMANDU</text>
+              </g>
+              <g className="map-node">
+                <circle cx="450" cy="250" r="5" fill="#F4F1ED" />
+                <text x="450" y="280" fill="#D5C2B3" fontSize="11" textAnchor="middle" letterSpacing="0.15em">ABU ROAD</text>
+              </g>
+              <g className="map-node">
+                <circle cx="650" cy="150" r="5" fill="#F4F1ED" />
+                <text x="650" y="180" fill="#D5C2B3" fontSize="11" textAnchor="middle" letterSpacing="0.15em">MOHALI</text>
+              </g>
+              <g className="map-node">
+                <circle cx="950" cy="100" r="8" fill="#A88771" className="animate-pulse" />
+                <circle cx="950" cy="100" r="16" fill="none" stroke="#A88771" strokeWidth="1" className="animate-ping" />
+                <text x="950" y="138" fill="#A88771" fontSize="13" fontWeight="600" textAnchor="middle" letterSpacing="0.2em">DUBAI</text>
+              </g>
+            </svg>
           </div>
 
-          <div className="text-center space-y-1">
-            <p className="font-['Bodoni_Moda'] text-3xl md:text-5xl font-light text-[#B88272] tracking-tight">
-              36
-            </p>
-            <p className="text-[11px] font-medium tracking-[0.2em] text-[#A89A92] uppercase">
-              Years of Caliber
-            </p>
-          </div>
-
-          <div className="text-center space-y-1">
-            <p className="font-['Bodoni_Moda'] text-3xl md:text-5xl font-light text-[#B88272] tracking-tight">
-              1000+
-            </p>
-            <p className="text-[11px] font-medium tracking-[0.2em] text-[#A89A92] uppercase">
-              Luxury Projects
-            </p>
+          {/* Premium Statistics Grid */}
+          <div className="reveal-up w-full grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pt-16">
+            <div className="bg-[#121212] rounded-2xl p-6 text-center">
+              <p className="text-3xl md:text-4xl text-[#C5A894] font-semibold mb-1 font-mono">1989</p>
+              <p className="text-[10px] tracking-[0.25em] text-gray-400 uppercase font-medium">Founded</p>
+            </div>
+            <div className="bg-[#121212] rounded-2xl p-6 text-center">
+              <p className="text-3xl md:text-4xl text-[#C5A894] font-semibold mb-1 font-mono">7</p>
+              <p className="text-[10px] tracking-[0.25em] text-gray-400 uppercase font-medium">Global Hubs</p>
+            </div>
+            <div className="bg-[#121212] rounded-2xl p-6 text-center">
+              <p className="text-3xl md:text-4xl text-[#C5A894] font-semibold mb-1 font-mono">36</p>
+              <p className="text-[10px] tracking-[0.25em] text-gray-400 uppercase font-medium">Years of Caliber</p>
+            </div>
+            <div className="bg-[#121212] rounded-2xl p-6 text-center">
+              <p className="text-3xl md:text-4xl text-[#C5A894] font-semibold mb-1 font-mono">1000+</p>
+              <p className="text-[10px] tracking-[0.25em] text-gray-400 uppercase font-medium">Masterpieces</p>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* FOOTER LUXURY SIGNATURE */}
-      {/* <footer className="bg-[#F8F5F2] py-12 text-center text-[10px] tracking-[0.3em] uppercase text-[#A89A92] border-t border-[#A89A92]/10">
-        © 2026 TRIVENI MARBLE & STONE ARCHITECTURE. ALL RIGHTS RESERVED.
-      </footer> */}
     </div>
   );
 }
