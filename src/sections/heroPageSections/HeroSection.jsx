@@ -2,15 +2,16 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import heroScroledVideo from "../../assets/riteshworkkk.mp4";
-// import heroScroledVideo from "../../assets/optimizedHeroVideo.mp4";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function DesktopCanvas() {
+export default function DesktopCanvas() {
   const containerRef = useRef(null);
-  const pinTargetRef = useRef(null); // Ref for the viewport element we want to lock
+  const pinTargetRef = useRef(null);
   const videoRef = useRef(null);
-  const textRef = useRef(null);
+  const mediaWrapperRef = useRef(null);
+
+  // Typography references for entrance and scrubbed sequences
   const eyebrowRef = useRef(null);
   const titleRef = useRef(null);
   const lineRef = useRef(null);
@@ -20,172 +21,150 @@ function DesktopCanvas() {
     const video = videoRef.current;
     if (!video) return;
 
-    // --- 1. INITIAL ENTRANCE ANIMATION (FADE-IN) ---
-    const fadeInFrame = window.requestAnimationFrame(() => {
-      [
-        eyebrowRef.current,
-        titleRef.current,
-        lineRef.current,
-        subtitleRef.current,
-      ].forEach((node, index) => {
-        if (!node) return;
-        node.style.opacity = "1";
-        node.style.transform = "translateY(0)";
-        node.style.filter = "blur(0px)";
-        node.style.transition =
-          "opacity 900ms ease, transform 900ms ease, filter 900ms ease";
-        node.style.transitionDelay = `${index * 120}ms`;
-      });
-    });
+    video.pause();
+    video.currentTime = 0;
 
-    // --- 2. GSAP SCROLLTRIGGER WITH PINNING ---
-    let tl;
-    
-    const initScrollAnimation = () => {
-      const videoProxy = { currentTime: 0 };
+    let ctx = gsap.context(() => {
+      const updateVideoDuration = () => {
+        return video.duration && !isNaN(video.duration) ? video.duration : 5;
+      };
 
-      tl = gsap.timeline({
+      let targetTime = 0;
+      let currentTime = 0;
+      let rafId = null;
+
+      // --- 1. INITIAL MOUNT ENTRANCE ANIMATION ---
+      // Triggers smooth slide-in/fade-in of elements the moment the component mounts on screen
+      const entranceTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      
+      entranceTl
+        .fromTo(mediaWrapperRef.current, { scale: 1.12, opacity: 0 }, { scale: 1.06, opacity: 1, duration: 1.4 })
+        .fromTo(eyebrowRef.current, { opacity: 0, y: 20, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8 }, "-=1.0")
+        .fromTo(titleRef.current, { opacity: 0, y: 30, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9 }, "-=0.6")
+        .fromTo(lineRef.current, { width: "0px", opacity: 0 }, { width: "80px", opacity: 1, duration: 0.7 }, "-=0.5")
+        .fromTo(subtitleRef.current, { opacity: 0, y: 20, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8 }, "-=0.5");
+
+      // --- 2. MASTER SCROLL-DRIVEN GSAP ANIMATION ---
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top top",         // Start pinning when the top of the container hits top of viewport
-          end: "+=280%",            // Scroll duration equivalent to your original height
-          scrub: 1.5, 
-          pin: pinTargetRef.current,// Let GSAP physically lock this container in place
-          pinSpacing: true,         // Create layout space so content below won't overlap
+          start: "top top",
+          end: "+=400%",
+          scrub: 0.05,
+          pin: pinTargetRef.current,
+          pinSpacing: true,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            const dur = updateVideoDuration();
+            targetTime = self.progress * dur;
+          },
         },
       });
 
-      tl.to(videoProxy, {
-        currentTime: video.duration || 5,
-        ease: "none",
-        onUpdate: () => {
-          video.currentTime = videoProxy.currentTime;
-        },
-      });
-    };
+      // Subtle zoom effect during scroll
+      tl.to(mediaWrapperRef.current, {
+        scale: 1.0,
+        ease: "power1.inOut",
+      }, 0);
 
-    if (video.readyState >= 1) {
-      initScrollAnimation();
-    } else {
-      video.addEventListener("loadedmetadata", initScrollAnimation);
-    }
+      // Scroll-linked secondary adjustments & exit transition
+      tl.to(pinTargetRef.current, { opacity: 0.15, scale: 0.98, ease: "power1.in" }, 0.85);
+
+      // High-frequency render loop for zero-lag video frame mapping
+      const renderLoop = () => {
+        const diff = targetTime - currentTime;
+        
+        if (Math.abs(diff) > 0.0005) {
+          currentTime += diff * 0.35;
+          
+          const maxDur = updateVideoDuration();
+          if (currentTime < 0) currentTime = 0;
+          if (currentTime > maxDur) currentTime = maxDur;
+
+          if (Math.abs(video.currentTime - currentTime) > 0.002) {
+            video.currentTime = currentTime;
+          }
+        }
+
+        rafId = requestAnimationFrame(renderLoop);
+      };
+
+      rafId = requestAnimationFrame(renderLoop);
+
+      return () => {
+        if (rafId) cancelAnimationFrame(rafId);
+      };
+
+    }, containerRef);
 
     return () => {
-      window.cancelAnimationFrame(fadeInFrame);
-      if (video) {
-        video.removeEventListener("loadedmetadata", initScrollAnimation);
-      }
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ctx.revert();
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
   return (
-    // Outer trigger wrapper
-    <div ref={containerRef} className="w-full bg-[#0d0b08]">
+    <div ref={containerRef} className="w-full bg-[var(--bg-main)]">
       
-      {/* The actual viewport container that stays rock-solid using GSAP pin */}
+      {/* Pinned Viewport Container */}
       <div 
         ref={pinTargetRef} 
-        className="w-full h-screen overflow-hidden flex items-center justify-center relative"
+        className="w-full h-screen overflow-hidden flex items-center justify-center relative bg-[var(--bg-main)] will-change-transform"
       >
         
-        {/* --- DESKTOP HIGH-END TYPOGRAPHY OVERLAY --- */}
+        {/* --- DYNAMIC MEDIA CONTAINER --- */}
+        <div 
+          ref={mediaWrapperRef}
+          className="absolute inset-0 w-full h-full overflow-hidden will-change-transform opacity-0"
+          style={{ transform: "scale(1.06)" }}
+        >
+          <video
+            ref={videoRef}
+            src={heroScroledVideo}
+            preload="auto"
+            muted
+            playsInline
+            className="w-full h-full object-cover pointer-events-none select-none"
+          />
+        </div>
+
+        {/* --- HIGH-END TYPOGRAPHY OVERLAY LAYER --- */}
         <div
-          ref={textRef}
-          style={{
-            position: "absolute",
-            left: "8%",
-            top: "24%",
-            zIndex: 20,
-            color: "#f5ede0",
-            maxWidth: "550px",
-            pointerEvents: "none",
-            willChange: "transform, opacity, filter",
-          }}
+          className="absolute z-20 pointer-events-none"
+          style={{ left: "8%", top: "24%", maxWidth: "550px" }}
         >
           <p
             ref={eyebrowRef}
-            style={{
-              fontFamily: "'Jost', sans-serif",
-              fontSize: "12px",
-              letterSpacing: "0.5em",
-              color: "#c8a96e",
-              textTransform: "uppercase",
-              marginBottom: "16px",
-              fontWeight: 500,
-              opacity: 0,
-              transform: "translateY(24px)",
-              filter: "blur(6px)",
-            }}
+            className="font-ui text-xs uppercase tracking-[0.5em] text-[var(--color-accent)] mb-4 font-medium opacity-0"
+            style={{ willChange: "transform, opacity, filter, letter-spacing" }}
           >
             Crafting Spaces
           </p>
+
           <h1
             ref={titleRef}
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: "76px",
-              fontWeight: 200,
-              lineHeight: "1.05",
-              letterSpacing: "0.06em",
-              margin: "0 0 20px 0",
-              color: "#ffffff",
-              opacity: 0,
-              transform: "translateY(24px)",
-              filter: "blur(6px)",
-            }}
+            className="font-heading font-light text-6xl md:text-[76px] leading-[1.05] tracking-[0.06em] text-[var(--text-primary)] mb-5 opacity-0 text-white"
+            style={{ willChange: "transform, opacity, filter" }}
           >
             Since 1989
           </h1>
+
           <div
             ref={lineRef}
-            style={{
-              width: "60px",
-              height: "1px",
-              background: "#c8a96e",
-              marginBottom: "20px",
-              opacity: 0,
-              transform: "translateY(24px)",
-              filter: "blur(6px)",
-            }}
+            className="h-[1px] bg-[var(--color-accent)] mb-5 opacity-0"
+            style={{ width: "0px", willChange: "width, opacity" }}
           />
+
           <p
             ref={subtitleRef}
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-              fontSize: "18px",
-              fontStyle: "italic",
-              color: "#c8a96e",
-              letterSpacing: "0.1em",
-              margin: 0,
-              opacity: 0,
-              transform: "translateY(24px)",
-              filter: "blur(6px)",
-            }}
+            className="font-heading italic text-lg md:text-xl text-[var(--color-accent)] tracking-[0.1em] m-0 opacity-0"
+            style={{ willChange: "transform, opacity, filter" }}
           >
             Across India, &amp; Nepal &amp; UAE
           </p>
         </div>
 
-        {/* --- PERFECTLY CONTAINED VIDEO LAYER --- */}
-        <video
-          ref={videoRef}
-          src={heroScroledVideo}
-          playsInline
-          muted
-          preload="auto"
-          style={{
-            width: "100%",
-            height: "130%",
-            objectFit: "cover",
-            pointerEvents: "none",
-            transform: "scale(1.03)", 
-            willChange: "transform",
-          }}
-        />
       </div>
     </div>
   );
 }
-
-export default DesktopCanvas;

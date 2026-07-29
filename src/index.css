@@ -1,21 +1,332 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,300;0,400;1,300&family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-@layer utilities {
-  .font-serif-luxury {
-    font-family: 'Cormorant Garamond', serif;
-  }
-  
-  .font-sans-editorial {
-    font-family: 'Inter', sans-serif;
-  }
+/* ==========================================================================
+   TRIVENI DESIGN SYSTEM
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Albert+Sans:wght@300;400;500;600;700&display=swap");
+
+/* ==========================================================================
+   ROOT VARIABLES
+   ========================================================================== */
+
+:root {
+
+  /* ===========================
+     BRAND COLORS
+  =========================== */
+
+  --color-primary: #1A2B78;
+  --color-primary-light: #3147A5;
+  --color-primary-dark: #13205D;
+
+  --color-accent: #D2492A;
+  --color-accent-light: #E86C4D;
+  --color-accent-dark: #A7351B;
+
+  /* ===========================
+     BACKGROUNDS
+  =========================== */
+
+  --bg-main: #F8F7F3;
+  --bg-soft: #F3F0EA;
+  --bg-card: #FFFFFF;
+  --bg-dark: #111111;
+
+  /* ===========================
+     TEXT
+  =========================== */
+
+  --text-primary: #161616;
+  --text-secondary: #5F5F5F;
+  --text-muted: #888888;
+  --text-white: #FFFFFF;
+
+  /* ===========================
+     BORDERS
+  =========================== */
+
+  --border-light: #E8E2D8;
+  --border-medium: #D7D1C7;
+
+  /* ===========================
+     SHADOWS
+  =========================== */
+
+  --shadow-soft:
+    0 4px 20px rgba(0,0,0,.05);
+
+  --shadow-card:
+    0 12px 40px rgba(0,0,0,.08);
+
+  --shadow-hover:
+    0 24px 60px rgba(0,0,0,.12);
+
+  /* ===========================
+     RADIUS
+  =========================== */
+
+  --radius-sm: .75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --radius-2xl: 2.5rem;
+
+  /* ===========================
+     TRANSITIONS
+  =========================== */
+
+  --ease:
+    cubic-bezier(.22,1,.36,1);
+
+  --transition-fast:
+    250ms var(--ease);
+
+  --transition-normal:
+    450ms var(--ease);
+
+  --transition-slow:
+    700ms var(--ease);
+
+  /* ===========================
+     TYPOGRAPHY
+  =========================== */
+
+  --font-heading:
+    "Cormorant Garamond", serif;
+
+  --font-body:
+    "Inter", sans-serif;
+
+  --font-ui:
+    "Plus Jakarta Sans", sans-serif;
+
+  --font-number:
+    "Albert Sans", sans-serif;
+
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@200;300;400;500;600&display=swap');
-@import "tailwindcss";
+/* ==========================================================================
+   BASE
+   ========================================================================== */
 
-@layer utilities {
-  .font-albert {
-    font-family: 'Albert Sans', sans-serif;
+html{
+  /* Lenis drives smoothing itself — native smooth-scroll fights it and
+     causes the janky/stuck feeling. Do not re-enable this. */
+}
+
+/* Lenis recommended base rules */
+html.lenis, html.lenis body{
+  height:auto;
+}
+
+.lenis.lenis-smooth{
+  scroll-behavior:auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent]{
+  overscroll-behavior:contain;
+}
+
+.lenis.lenis-stopped{
+  overflow:hidden;
+}
+
+.lenis.lenis-scrolling iframe{
+  pointer-events:none;
+}
+
+body{
+
+  margin:0;
+
+  background:var(--bg-main);
+
+  color:var(--text-primary);
+
+  font-family:var(--font-body);
+
+  text-rendering:optimizeLegibility;
+
+  -webkit-font-smoothing:antialiased;
+
+  -moz-osx-font-smoothing:grayscale;
+
+  overflow-x:hidden;
+
+}
+
+/* ==========================================================================
+   SELECTION
+   ========================================================================== */
+
+::selection{
+
+  background:var(--color-accent);
+
+  color:white;
+
+}
+
+/* ==========================================================================
+   SCROLLBAR
+   ========================================================================== */
+
+::-webkit-scrollbar{
+  width:10px;
+}
+
+::-webkit-scrollbar-track{
+  background:var(--bg-soft);
+}
+
+::-webkit-scrollbar-thumb{
+  background:var(--color-primary);
+  border-radius:999px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:var(--color-accent);
+}
+
+/* ==========================================================================
+   IMAGES
+   ========================================================================== */
+
+img{
+
+  display:block;
+
+  max-width:100%;
+
+  height:auto;
+
+}
+
+/* ==========================================================================
+   LINKS
+   ========================================================================== */
+
+a{
+
+  color:inherit;
+
+  text-decoration:none;
+
+  transition:var(--transition-fast);
+
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+
+@layer utilities{
+
+  /* Fonts */
+
+  .font-heading{
+    font-family:var(--font-heading);
   }
+
+  .font-body{
+    font-family:var(--font-body);
+  }
+
+  .font-ui{
+    font-family:var(--font-ui);
+  }
+
+  .font-number{
+    font-family:var(--font-number);
+  }
+
+  /* Colors */
+
+  .bg-brand{
+    background:var(--bg-main);
+  }
+
+  .bg-soft{
+    background:var(--bg-soft);
+  }
+
+  .bg-card{
+    background:var(--bg-card);
+  }
+
+  .bg-primary{
+    background:var(--color-primary);
+  }
+
+  .bg-accent{
+    background:var(--color-accent);
+  }
+
+  .text-primary{
+    color:var(--text-primary);
+  }
+
+  .text-secondary{
+    color:var(--text-secondary);
+  }
+
+  .text-muted{
+    color:var(--text-muted);
+  }
+
+  .text-brand{
+    color:var(--color-primary);
+  }
+
+  .text-accent{
+    color:var(--color-accent);
+  }
+
+  .text-inverse{
+    color:var(--text-white);
+  }
+
+  .border-brand{
+    border-color:var(--border-light);
+  }
+
+  .border-brand-medium{
+    border-color:var(--border-medium);
+  }
+
+  /* Shadows */
+
+  .shadow-soft{
+    box-shadow:var(--shadow-soft);
+  }
+
+  .shadow-card{
+    box-shadow:var(--shadow-card);
+  }
+
+  .shadow-hover{
+    box-shadow:var(--shadow-hover);
+  }
+
+  /* Radius */
+
+  .rounded-editorial{
+    border-radius:var(--radius-xl);
+  }
+
+  .rounded-editorial-lg{
+    border-radius:var(--radius-2xl);
+  }
+
+  .rounded-editorial-sm{
+    border-radius:var(--radius-md);
+  }
+
+  /* Transition */
+
+  .transition-editorial{
+    transition:all var(--transition-normal);
+  }
+
 }

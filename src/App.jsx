@@ -5,6 +5,18 @@ import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import ErrorBoundary from "./components/ErrorBoundary";
+import WpcDecking from "./pages/products/WPCdecking";
+import Dimore from "./pages/products/Dimore";
+import Ispira from "./pages/products/Ispira";
+import Arvia from "./pages/products/Arvia";
+import Marfil from "./pages/products/Marfil";
+import Monolith from "./pages/products/Monolith";
+import MarbleFurniture from "./pages/products/MarbleFurniture";
+import WashBasin from "./pages/products/WashBasin";
+import BathTub from "./pages/products/BathTub";
+import WallMurals from "./pages/products/WallMurals";
+import MarbleArtifacts from "./pages/products/MarbleArtifacts";
+import MarbleFountain from "./pages/products/MarbleFountain";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const Projects = lazy(() => import("./pages/ProjectsSection"));
@@ -34,16 +46,29 @@ const IClad = lazy(() => import("./pages/products/ICLAD"));
 const WPCPandelling = lazy(() => import("./pages/products/WPCpendeling"));
 
 const RouteFallback = () => (
-  <div className="flex min-h-[50vh] items-center justify-center bg-[#0a0a0a] px-6 text-center">
-    <div className="rounded-full border border-[#C67D55]/30 bg-[#141414] px-6 py-3 text-sm tracking-[0.25em] text-[#f5ede0]">
-      Loading page...
+  <div className="flex min-h-screen items-center justify-center bg-brand">
+    <div className="flex flex-col items-center">
+      {/* Logo */}
+      <img
+        src="https://res.cloudinary.com/x5rakscg/image/upload/v1785233735/logoTriveni_yu08nj.png"
+        alt="Triveni"
+        className="w-36 md:w-44 opacity-90"
+      />
+
+      {/* Elegant Loader */}
+      <div className="mt-8 h-10 w-10 rounded-full border-2 border-brand border-t-accent animate-spin" />
+
+      {/* Text */}
+      <p className="mt-6 font-ui text-xs uppercase tracking-[0.35em] text-secondary">
+        Preparing Your Experience
+      </p>
     </div>
   </div>
 );
 
 function App() {
   return (
-    <div className="relative min-h-screen w-full flex flex-col overflow-x-clip bg-[#0a0a0a]">
+    <div className="relative min-h-screen w-full flex flex-col overflow-x-clip bg-[#fefefe]">
       <Navbar />
       <ScrollToTop />
 
@@ -76,6 +101,18 @@ function App() {
               <Route path="/thermopine" element={<Theromine />} />
               <Route path="/i-clad" element={<IClad />} />
               <Route path="/wpc-panelling" element={<WPCPandelling />} />
+              <Route path="/wpc-decking" element={<WpcDecking />} />
+              <Route path="/dimore" element={<Dimore />} />
+              <Route path="/ispira" element={<Ispira />} />
+              <Route path="/arvia" element={<Arvia />} />
+              <Route path="/marfil" element={<Marfil />} />
+              <Route path="/monolith" element={<Monolith />} />
+              <Route path="/marble-furniture" element={<MarbleFurniture />} />
+              <Route path="/wash-basin" element={<WashBasin />} />
+              <Route path="/bath-tub" element={<BathTub />} />
+              <Route path="/wall-murals" element={<WallMurals />} />
+              <Route path="/marble-artifacts" element={<MarbleArtifacts />} />
+              <Route path="/marble-fountain" element={<MarbleFountain />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>

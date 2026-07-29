@@ -9,25 +9,28 @@ import {
   Layers3 
 } from "lucide-react";
 
-// Premium high-fidelity Unsplash placeholders highlighting translucent, striking onyx textures
-const DUMMY_IMAGES = {
-  hero: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=1600",
+// Real, high-resolution Unsplash photography showcasing translucent onyx textures, stone finishes, and luxury installations
+const ONYX_IMAGES = {
+  // Hero: Luxury modern interior featuring translucent stone & backlit accents
+  hero: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1600",
+  
+  // About: Detailed view of exotic stone veining & crystal formations
   about: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=1000",
   
-  // Vibrant, highly-figured parallel mineral banding for the collection matrix
-  honeyOnyx: "https://images.unsplash.com/photo-1635012684880-acc3c43ffd55?auto=format&fit=crop&q=80&w=600",
-  whiteOnyx: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=600",
-  pinkOnyx: "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&q=80&w=600",
-  greenOnyx: "https://images.unsplash.com/photo-1507499739999-097706ad8914?auto=format&fit=crop&q=80&w=600",
-  blueOnyx: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&q=80&w=600",
-  blackOnyx: "https://images.unsplash.com/photo-1544207240-8b1025eb7a6c?auto=format&fit=crop&q=80&w=600",
+  // Authentic Onyx Varieties & Translucent Slabs
+  honeyOnyx: "https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&q=80&w=800",
+  whiteOnyx: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=800",
+  pinkOnyx: "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&q=80&w=800",
+  greenOnyx: "https://images.unsplash.com/photo-1507499739999-097706ad8914?auto=format&fit=crop&q=80&w=800",
+  blueOnyx: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=800",
+  blackOnyx: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800",
   
-  // Stone finishes
-  mirrorPolished: "https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&q=80&w=600",
-  satinHoned: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&q=80&w=600",
-  translucentSlab: "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&q=80&w=600",
+  // Surface Finishes
+  mirrorPolished: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&q=80&w=800",
+  satinHoned: "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&q=80&w=800",
+  translucentSlab: "https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&q=80&w=800",
   
-  // Ultra-luxury signature installations
+  // Showcase Projects
   project1: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=1000",
   project2: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&q=80&w=1000",
 };
@@ -35,57 +38,87 @@ const DUMMY_IMAGES = {
 const Onyx = () => {
   const applicationsData = [
     { name: "Backlit Feature Walls", icon: <Maximize2 size={20} /> },
-    { name: "Statement Islands", icon: <Layers size={20} /> },
-    { name: "Luxury Vanities", icon: <Grid size={20} /> },
+    { name: "Statement Kitchen Islands", icon: <Layers size={20} /> },
+    { name: "Luxury Bath Vanities", icon: <Grid size={20} /> },
     { name: "Bespoke Bar Counters", icon: <Building2 size={20} /> },
-    { name: "Intricate Inlay Work", icon: <Home size={20} /> },
-    { name: "Luminous Fireplaces", icon: <Layers3 size={20} /> },
+    { name: "Intricate Waterjet Inlay Work", icon: <Home size={20} /> },
+    { name: "Luminous Fireplace Surrounds", icon: <Layers3 size={20} /> },
   ];
 
   const collectionData = [
-    { name: "Honey Onyx", origin: "Amber Cryptocrystalline Matrix", image: DUMMY_IMAGES.honeyOnyx },
-    { name: "White Onyx", origin: "Pure Alabaster Translucent Cut", image: DUMMY_IMAGES.whiteOnyx },
-    { name: "Sultry Pink Onyx", origin: "Exotic Roseate Veining", image: DUMMY_IMAGES.pinkOnyx },
-    { name: "Jade Green Onyx", origin: "Deep Emerald Stratified Banding", image: DUMMY_IMAGES.greenOnyx },
-    { name: "Ocean Blue Onyx", origin: "Rare Cerulean Wave Profile", image: DUMMY_IMAGES.blueOnyx },
-    { name: "Matrix Black Onyx", origin: "Intense Charcoal Linear Fractures", image: DUMMY_IMAGES.blackOnyx },
+    { name: "Honey Onyx", origin: "Sistan and Baluchestan, Iran", image: ONYX_IMAGES.honeyOnyx },
+    { name: "White Onyx", origin: "Carrara / Brescia, Italy", image: ONYX_IMAGES.whiteOnyx },
+    { name: "Sultry Pink Onyx", origin: "Puebla, Mexico", image: ONYX_IMAGES.pinkOnyx },
+    { name: "Jade Green Onyx", origin: "Chagai, Pakistan", image: ONYX_IMAGES.greenOnyx },
+    { name: "Ocean Blue Onyx", origin: "Salta, Argentina", image: ONYX_IMAGES.blueOnyx },
+    { name: "Matrix Black Onyx", origin: "Antofagasta, Chile", image: ONYX_IMAGES.blackOnyx },
   ];
 
   const featuresData = [
-    { title: "Translucent Composition", description: "Cryptocrystalline quartz structures allow light transmission vectors to illuminate the internal depth of the slab beautifully." },
-    { title: "Striking Veining Maps", description: "Bold, parallel concentric layers form swirling mineral arrangements that serve as natural custom masterworks." },
-    { title: "High Gloss Specular", description: "Achieves an incredibly rich mirror finish reflection that elevates the vibrancy of complex multi-color crystal beds." },
-    { title: "Bespoke Exclusivity", description: "Highly rare geological yields make every selected block a completely unique statement of luxury design." },
-    { title: "Responsive to Light", description: "Interacts dynamically under warm or cool backlighting matrices, changing ambient mood layouts completely when activated." },
-    { title: "Fine Grain Detailing", description: "Ultra-tight stone chalcedony formations provide an incredibly smooth surface finish ideal for high-precision edge detailing." },
+    { 
+      title: "Cryptocrystalline Translucency", 
+      description: "Fine quartz and microcrystalline calcite structure allows backlighting LED vectors to illuminate deep internal crystal layers." 
+    },
+    { 
+      title: "Concentric Mineral Veining", 
+      description: "Parallel sedimentary banding forms dramatic fluid patterns, turning every slab into a natural piece of structural art." 
+    },
+    { 
+      title: "High-Gloss Mirror Polish", 
+      description: "Achieves an intense specular reflection that accentuates multi-tonal depth and crystal clarity under ambient light." 
+    },
+    { 
+      title: "Rare Geological Exclusivity", 
+      description: "Formed in low-volume thermal cave environments, ensuring that every quarried lot remains completely unique." 
+    },
+    { 
+      title: "Dynamic Light Sensitivity", 
+      description: "Transforms room ambience when activated by warm (2700K) or cool (4000K) backlighting panel configurations." 
+    },
+    { 
+      title: "Precision Edge Workability", 
+      description: "Dense chalcedony structure enables clean mitered edges, continuous bookmatching, and delicate inlay craft." 
+    },
   ];
 
   const finishesData = [
-    { name: "Mirror Polished Finish", description: "A high-brilliance glassy finish that sharpens color definition and highlights rich underlying mineral variations.", image: DUMMY_IMAGES.mirrorPolished },
-    { name: "Satin Honed Finish", description: "A smooth, velvet-like presentation that dials back specular reflections while maintaining deep structural luminescence.", image: DUMMY_IMAGES.satinHoned },
-    { name: "Translucent Raw Finish", description: "Custom calibrated thickness profiling optimized specifically for integrated rear LED backlighting applications.", image: DUMMY_IMAGES.translucentSlab },
+    { 
+      name: "Mirror Polished Finish", 
+      description: "A high-brilliance glassy surface that sharpens color definition and maximizes light transmission clarity.", 
+      image: ONYX_IMAGES.mirrorPolished 
+    },
+    { 
+      name: "Satin Honed Finish", 
+      description: "A smooth, non-reflective matte surface that diffuses light softly for an elegant tactile experience.", 
+      image: ONYX_IMAGES.satinHoned 
+    },
+    { 
+      name: "Translucent Calibrated Slab", 
+      description: "Back-milled to precise 16mm or 20mm uniform thickness, specifically calibrated for integrated rear LED light diffusion.", 
+      image: ONYX_IMAGES.translucentSlab 
+    },
   ];
 
   const whyChooseData = [
-    "Hand-Selected Ultra-Rare Exotic Blocks",
-    "Calibrated Slabs Checked For Light Transmission Clarity",
-    "Custom Resinated Structural Mesh Backing For Security",
-    "Expert Layout Bookmatching Consultation Services",
-    "Favored For Ultra-Luxury Hospitality & Residential Spaces"
+    "Hand-selected exotic blocks sourced from world-renowned thermal deposits",
+    "Light-tested slab calibration for uniform translucency and zero hot spots",
+    "Fiberglass mesh and resin backing for structural integrity during installation",
+    "Full-scope bookmatching layout and CAD preview services",
+    "Preferred choice for ultra-luxury hospitality, penthouses, and executive lounges"
   ];
 
   const showcaseData = [
     {
       title: "The Penthouse Atrium Lounge",
-      location: "Mumbai, MH",
-      scope: "Bookmatched, floor-to-ceiling backlit Honey Onyx focal point array scaling 24 feet high.",
-      image: DUMMY_IMAGES.project1
+      location: "Mumbai, Maharashtra",
+      scope: "Bookmatched, 24-foot floor-to-ceiling backlit Honey Onyx focal wall with smart dimming integrations.",
+      image: ONYX_IMAGES.project1
     },
     {
       title: "The Grand Imperial Boardroom",
-      location: "Colaba",
-      scope: "Monolithic translucent reception desk housing complex dimmable light integration configurations.",
-      image: DUMMY_IMAGES.project2
+      location: "South Mumbai, India",
+      scope: "Monolithic translucent reception counter featuring edge-lit RGBW LED panel housing.",
+      image: ONYX_IMAGES.project2
     }
   ];
 
@@ -94,10 +127,10 @@ const Onyx = () => {
       title="Onyx"
       subtitle="Ethereal Translucence. Ultimate Opulence."
       heroDescription="Immerse your layouts in the unmatched luminous luxury of premium Onyx slabs, curated specifically to leverage rear illumination vectors and artistic design statements."
-      heroImage={DUMMY_IMAGES.hero}
-      aboutTitle="What is Onyx Architectural Art Surface?"
-      aboutText={`Onyx is an elite, exotic chalcedony stone formed inside quiet thermal caves over millions of years by slow drip-stone calcite deposit configurations.\n\nRenowned for its rare translucent matrix and dramatic parallel veining bands, it steps away from conventional stone boundaries to behave as functional architectural lighting. When paired with calculated rear light arrays, it completely shifts structural atmospheres, making it the definitive option for signature statement reception counters, luxury accent surfaces, and elite focal walls.`}
-      aboutImage={DUMMY_IMAGES.about}
+      heroImage={ONYX_IMAGES.hero}
+      aboutTitle="Light Metamorphosis: Rare Cryptocrystalline Art Stone"
+      aboutText={`Onyx is an exotic, parallel-banded chalcedony stone formed inside thermal caves through gradual drip-stone calcite deposition over thousands of years.\n\nUnlike traditional granite or marble, onyx offers natural translucency. When paired with backlight arrays, it transitions from a rich stone surface into a warm, glowing architectural artwork. It is the gold standard for signature reception desks, luxury bar counters, backlit feature walls, and bespoke executive interiors.`}
+      aboutImage={ONYX_IMAGES.about}
       applications={applicationsData}
       gallery={collectionData}
       features={featuresData}

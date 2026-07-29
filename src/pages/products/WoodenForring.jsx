@@ -9,23 +9,26 @@ import {
   Layers3 
 } from "lucide-react";
 
-// Premium Unsplash placeholders showcasing high-end architectural hardwood installations
-const DUMMY_IMAGES = {
+// Real, high-resolution Unsplash photography showcasing timber textures and hardwood interiors
+const WOODEN_FLOORING_IMAGES = {
+  // Hero: Modern luxury interior with wide-plank hardwood flooring
   hero: "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?auto=format&fit=crop&q=80&w=1600",
+  
+  // About: Detailed view of real timber grain and plank craftsmanship
   about: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=1000",
   
-  // High-fidelity timber profiles and grain patterns for the product grid
-  royalOak: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=600",
-  smokedWalnut: "https://images.unsplash.com/photo-1507499739999-097706ad8914?auto=format&fit=crop&q=80&w=600",
-  naturalTeak: "https://images.unsplash.com/photo-1544207240-8b1025eb7a6c?auto=format&fit=crop&q=80&w=600",
-  classicMaple: "https://images.unsplash.com/photo-1635012684880-acc3c43ffd55?auto=format&fit=crop&q=80&w=600",
-  charcoalAsh: "https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&q=80&w=600",
-  exoticMerbau: "https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&q=80&w=600",
+  // High-fidelity timber profiles & grain patterns for the product grid
+  royalOak: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800",
+  smokedWalnut: "https://images.unsplash.com/photo-1507499739999-097706ad8914?auto=format&fit=crop&q=80&w=800",
+  naturalTeak: "https://images.unsplash.com/photo-1516455590571-18256e5bb9ff?auto=format&fit=crop&q=80&w=800",
+  classicMaple: "https://images.unsplash.com/photo-1590069261209-f8e9b8642343?auto=format&fit=crop&q=80&w=800",
+  charcoalAsh: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800",
+  exoticMerbau: "https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&q=80&w=800",
   
   // Micro-surface finishing treatments
-  brushedMatt: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&q=80&w=600",
-  smoothSatin: "https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&q=80&w=600",
-  handScraped: "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&q=80&w=600",
+  brushedMatt: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&q=80&w=800",
+  smoothSatin: "https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&q=80&w=800",
+  handScraped: "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&q=80&w=800",
   
   // Premium application setups
   project1: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=1000",
@@ -43,49 +46,79 @@ const WoodenFlooring = () => {
   ];
 
   const collectionData = [
-    { name: "Royal European Oak", origin: "Sustainably Managed Baltic Woodlands", image: DUMMY_IMAGES.royalOak },
-    { name: "Smoked American Walnut", origin: "Deep Core Thermal Pigmentation", image: DUMMY_IMAGES.smokedWalnut },
-    { name: "Burma Natural Teak", origin: "High-Oleoresin Moisture Barrier Timber", image: DUMMY_IMAGES.naturalTeak },
-    { name: "Classic Hard Maple", origin: "Dense Fine-Grained Uniform Profile", image: DUMMY_IMAGES.classicMaple },
-    { name: "Charcoal Stained Ash", origin: "Pronounced Ring-Porous Graphic Grain", image: DUMMY_IMAGES.charcoalAsh },
-    { name: "Exotic Interlocking Merbau", origin: "Heavy-Duty Subtropical Hardwood", image: DUMMY_IMAGES.exoticMerbau },
+    { name: "Royal European Oak", origin: "Baltic Region, Northern Europe", image: WOODEN_FLOORING_IMAGES.royalOak },
+    { name: "Smoked American Walnut", origin: "Appalachian Region, USA", image: WOODEN_FLOORING_IMAGES.smokedWalnut },
+    { name: "Burma Natural Teak", origin: "Tanintharyi Region, Myanmar", image: WOODEN_FLOORING_IMAGES.naturalTeak },
+    { name: "Classic Hard Maple", origin: "Eastern North America", image: WOODEN_FLOORING_IMAGES.classicMaple },
+    { name: "Charcoal Stained Ash", origin: "Central European Woodlands", image: WOODEN_FLOORING_IMAGES.charcoalAsh },
+    { name: "Exotic Interlocking Merbau", origin: "Indo-Pacific Rainforest Belt", image: WOODEN_FLOORING_IMAGES.exoticMerbau },
   ];
 
   const featuresData = [
-    { title: "Multi-Layer Stability", description: "Engineered cross-ply core matrices minimize natural lumber expansion and contraction vectors across climate shifts." },
-    { title: "High Impact Defense", description: "Multi-coat UV-cured acrylic polyurethane shields wood fibers from heavy tracking friction and micro-scratches." },
-    { title: "Acoustic Cushioning", description: "Dense cellular wood anatomy combined with premium underlayment dampens footstep resonance vectors efficiently." },
-    { title: "Thermal Integration", description: "Calibrated low thermal resistance coefficients make these boards highly compatible with fluid underfloor radiant heating grids." },
-    { title: "Restoration Capability", description: "Features a generous real timber wear-layer, allowing multiple sand-and-refinish maintenance routines over generations." },
-    { title: "Unadulterated Comfort", description: "Brings organic insulation parameters underfoot, maintaining surface warmth profiles far superior to stone compositions." },
+    { 
+      title: "Multi-Layer Cross-Ply Stability", 
+      description: "Engineered core matrices minimize natural lumber expansion, warping, and cupping caused by seasonal humidity shifts." 
+    },
+    { 
+      title: "UV-Cured Armor Shield", 
+      description: "Multi-coat acrylic polyurethane finish guards timber fibers against foot traffic abrasion, micro-scratches, and fading." 
+    },
+    { 
+      title: "Acoustic Dampening", 
+      description: "Dense cellular wood anatomy combined with high-density underlayment reduces impact sound resonance between floors." 
+    },
+    { 
+      title: "Underfloor Radiant Compatibility", 
+      description: "Calibrated low thermal resistance coefficient allows efficient heat transfer from hydronic and electric floor heating grids." 
+    },
+    { 
+      title: "Generous Wear-Layer", 
+      description: "Features a 3mm to 6mm solid timber wear-layer, allowing multiple sand-and-refinish maintenance cycles over decades." 
+    },
+    { 
+      title: "Natural Thermal Comfort", 
+      description: "Provides superior natural insulation underfoot, maintaining warm, comfortable floor temperatures year-round." 
+    },
   ];
 
   const finishesData = [
-    { name: "Wire-Brushed Matt Finish", description: "Pulls away softer springwood fiber layers to leave a deeply tactile, wire-textured surface that conceals wear.", image: DUMMY_IMAGES.brushedMatt },
-    { name: "Smooth Satin Lacquer", description: "An ultra-clean, uniform seal reflecting soft light angles while framing high wood grain readability.", image: DUMMY_IMAGES.smoothSatin },
-    { name: "Hand-Scraped Antique Profile", description: "Bespoke contour sculpting that mirrors historical craftsmanship, yielding raw vintage character and layout depth.", image: DUMMY_IMAGES.handScraped },
+    { 
+      name: "Wire-Brushed Matt Finish", 
+      description: "Pulls away softer springwood fibers to leave a rich, wire-textured surface that enhances natural grain and conceals minor wear.", 
+      image: WOODEN_FLOORING_IMAGES.brushedMatt 
+    },
+    { 
+      name: "Smooth Satin Lacquer", 
+      description: "An ultra-clean, uniform surface seal that reflects subtle ambient light while highlighting intricate wood grain clarity.", 
+      image: WOODEN_FLOORING_IMAGES.smoothSatin 
+    },
+    { 
+      name: "Hand-Scraped Antique Profile", 
+      description: "Bespoke contour sculpting that mirrors traditional artisan craftsmanship, giving every plank vintage character and structural depth.", 
+      image: WOODEN_FLOORING_IMAGES.handScraped 
+    },
   ];
 
   const whyChooseData = [
-    "100% FSC Certified Eco-Friendly Timber Stocks",
-    "Multi-Layer Precision Click-Lock Installation Alignment",
-    "VOC-Free Non-Toxic Structural Stains and Adhesives",
-    "Calibrated Planks Tested for Absolute Geometric Flatness",
-    "Specified by Premier Interior Architects Globally"
+    "100% FSC-Certified timber sourced from sustainably managed forests",
+    "Precision milled click-lock and tongue-and-groove joint alignment",
+    "E0 Grade / Zero-VOC non-toxic adhesives and eco-friendly stains",
+    "Laser-calibrated board geometry tested for perfect lay-flat installation",
+    "Specified by leading interior architects for residential and hospitality projects"
   ];
 
   const showcaseData = [
     {
       title: "The Alila Premium Wellness Pavilion",
-      location: "Bengaluru, KA",
-      scope: "Continuous wide-plank Engineered Oak surface layout extending cleanly over 14,000 Sq. Ft.",
-      image: DUMMY_IMAGES.project1
+      location: "Bengaluru, Karnataka",
+      scope: "Continuous wide-plank Engineered Oak flooring layout extending seamlessly across 14,000 sq. ft.",
+      image: WOODEN_FLOORING_IMAGES.project1
     },
     {
       title: "The Oberoi Signature Sky Villa",
-      location: "Gurugram, HR",
-      scope: "Custom herringbone pattern American Walnut layout integrated seamlessly with minimal stone trims.",
-      image: DUMMY_IMAGES.project2
+      location: "Gurugram, Haryana",
+      scope: "Custom herringbone pattern American Walnut layout integrated cleanly with minimalist stone trims.",
+      image: WOODEN_FLOORING_IMAGES.project2
     }
   ];
 
@@ -94,10 +127,10 @@ const WoodenFlooring = () => {
       title="Wooden Flooring"
       subtitle="Organic Warmth. Precision Engineering."
       heroDescription="Explore premium multi-layer engineered and solid hardwood planks designed to stabilize demanding residential floors and high-profile commercial spaces."
-      heroImage={DUMMY_IMAGES.hero}
-      aboutTitle="What is Premium Engineered Wooden Flooring?"
-      aboutText={`Premium engineered wooden flooring represents a flawless marriage between real structural hardwood aesthetics and advanced structural composition.\n\nConstructed by binding a genuine solid timber top layer over cross-laminated marine-grade plywood webs, it effectively bypasses the shifting, warping, and cupping liabilities of historical solid logs. This establishes a highly stable surface configuration perfect for pristine architectural expanses, radiant floor loops, and premium residential spaces seeking natural elegance.`}
-      aboutImage={DUMMY_IMAGES.about}
+      heroImage={WOODEN_FLOORING_IMAGES.hero}
+      aboutTitle="Natural Warmth Meets Engineered Performance"
+      aboutText={`Premium engineered wooden flooring combines the authentic warmth of genuine hardwood with advanced structural engineering.\n\nConstructed by bonding a solid timber top veneer over cross-laminated birch or eucalyptus plywood layers, it eliminates the swelling and warping issues common in traditional solid wood logs. The result is a dimensionally stable, long-lasting surface ideal for modern open-plan homes, radiant heating systems, and luxury commercial interiors.`}
+      aboutImage={WOODEN_FLOORING_IMAGES.about}
       applications={applicationsData}
       gallery={collectionData}
       features={featuresData}

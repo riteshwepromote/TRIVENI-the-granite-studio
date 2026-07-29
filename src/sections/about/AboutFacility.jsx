@@ -65,14 +65,6 @@ const REFRESHED_PROCESS_STEPS = [
   }
 ];
 
-const designSystemTokens = `
-  @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght=0,6..96,400;1,6..96,400&family=Cormorant+Garamond:ital,wght=0,300;0,400;1,300&family=Inter:wght=300;400;500;600&display=swap');
-
-  .font-luxury-serif { font-family: 'Cormorant Garamond', serif; }
-  .font-luxury-display { font-family: 'Bodoni Moda', serif; }
-  .font-editorial-sans { font-family: 'Inter', sans-serif; }
-`;
-
 export default function AboutFacility() {
   const containerRef = useRef(null);
 
@@ -82,15 +74,14 @@ export default function AboutFacility() {
     offset: ["start start", "end end"]
   });
 
-  // Pure Viewport Width translation mapping to bypass component layout rounding issues
+  // Pure Viewport Width translation mapping across 8 slides (0vw to -700vw)
   const xTranslation = useTransform(scrollYProgress, [0, 1], ["0vw", "-700vw"]);
 
   return (
-    <div className="bg-[#1A1817] text-[#2D2A28] font-editorial-sans antialiased selection:bg-[#B88272] selection:text-white">
-      <style>{designSystemTokens}</style>
-
+    <div className="bg-[#111111] text-inverse font-body antialiased selection:bg-accent selection:text-white select-none">
+      
       {/* SCROLL TRACK CONTAINER */}
-      <div ref={containerRef} className="relative h-[800vh] w-full bg-[#1A1817]">
+      <div ref={containerRef} className="relative h-[800vh] w-full bg-[#111111]">
         
         {/* STICKY BOX PIN */}
         <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
@@ -103,30 +94,31 @@ export default function AboutFacility() {
             {REFRESHED_PROCESS_STEPS.map((step, idx) => (
               <section 
                 key={idx}
-                className="w-screen h-screen flex-shrink-0 grid grid-cols-1 lg:grid-cols-12 relative overflow-hidden bg-[#1A1817]"
+                className="w-screen h-screen flex-shrink-0 grid grid-cols-1 lg:grid-cols-12 relative overflow-hidden bg-[#111111]"
               >
                 {/* IMMERSIVE IMAGE LAYER */}
                 <div className="col-span-1 lg:col-span-6 relative h-1/2 lg:h-full w-full overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#1A1817]/80 z-10 hidden lg:block" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1A1817] via-transparent to-transparent z-10 lg:hidden" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#111111]/30 to-[#111111] z-10 hidden lg:block" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-transparent to-transparent z-10 lg:hidden" />
+                  
                   <img
                     src={step.img}
                     alt={step.title}
-                    className="w-full h-full object-cover select-none pointer-events-none object-center"
+                    className="w-full h-full object-cover select-none pointer-events-none object-center transition-editorial"
                     loading={idx <= 1 ? "eager" : "lazy"}
                   />
-                  <div className="absolute inset-0 border-r border-white/5 pointer-events-none z-20 m-6" />
+                  <div className="absolute inset-0 border-r border-white/10 pointer-events-none z-20 m-6 rounded-editorial-lg hidden lg:block" />
                 </div>
 
                 {/* EDITORIAL NARRATIVE CONTENT BLOCK */}
-                <div className="col-span-1 lg:col-span-6 h-1/2 lg:h-full bg-[#1A1817] text-[#F8F5F2] flex flex-col justify-center px-6 md:px-16 lg:px-24 relative">
+                <div className="col-span-1 lg:col-span-6 h-1/2 lg:h-full bg-[#111111] text-inverse flex flex-col justify-center px-6 md:px-16 lg:px-24 relative">
                   
                   {/* Top Navigation HUD */}
                   <div className="absolute top-8 left-6 right-6 lg:left-24 lg:right-24 hidden md:flex items-center justify-between border-b border-white/10 pb-4">
-                    <span className="text-[10px] tracking-[0.3em] uppercase text-[#B88272] font-semibold">
+                    <span className="font-ui text-[11px] tracking-[0.2em] uppercase text-accent font-bold">
                       Triveni Quality Matrix
                     </span>
-                    <span className="font-luxury-display text-sm tracking-widest text-[#A89A92]/60">
+                    <span className="font-number text-sm tracking-widest text-white/60 font-medium">
                       {step.num} // 08
                     </span>
                   </div>
@@ -134,13 +126,14 @@ export default function AboutFacility() {
                   {/* Core Content Layout */}
                   <div className="max-w-xl space-y-4 md:space-y-6">
                     <div>
-                      <span className="text-[10px] tracking-[0.25em] text-[#A89A92] uppercase block font-medium mb-1">
+                      <span className="font-ui text-xs tracking-[0.2em] text-white/60 uppercase block font-semibold mb-2">
                         {step.subtitle}
                       </span>
-                      <h2 className="text-2xl md:text-5xl font-luxury-serif font-light text-white tracking-tight leading-[1.15]">
+                      
+                      <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl text-white font-medium tracking-tight leading-[1.12]">
                         {step.title.split(" ").map((word, wIdx) => 
                           wIdx % 2 === 1 ? (
-                            <span key={wIdx} className="font-luxury-display italic text-[#B88272] mr-2">{word} </span>
+                            <span key={wIdx} className="italic text-accent mr-2">{word} </span>
                           ) : (
                             <span key={wIdx} className="mr-2">{word} </span>
                           )
@@ -148,13 +141,15 @@ export default function AboutFacility() {
                       </h2>
                     </div>
 
-                    <p className="text-xs md:text-[15px] text-[#F8F5F2]/70 font-light leading-relaxed text-justify tracking-wide">
+                    <div className="w-14 h-[2.5px] bg-accent" />
+
+                    <p className="font-body text-sm md:text-base text-white/70 font-normal leading-relaxed tracking-wide">
                       {step.desc}
                     </p>
                   </div>
 
                   {/* Operational Bottom HUD Footer */}
-                  <div className="absolute bottom-8 left-6 right-6 lg:left-24 lg:right-24 hidden md:flex items-center justify-between border-t border-white/5 pt-4 text-[9px] text-[#A89A92] tracking-wider uppercase font-light">
+                  <div className="absolute bottom-8 left-6 right-6 lg:left-24 lg:right-24 hidden md:flex items-center justify-between border-t border-white/10 pt-4 font-ui text-[10px] text-white/40 tracking-[0.15em] uppercase font-semibold">
                     <span>Mined Quality to Finished Laying</span>
                     <span>Triveni Production © 2026</span>
                   </div>

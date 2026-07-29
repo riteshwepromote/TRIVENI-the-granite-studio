@@ -38,50 +38,53 @@ const ROW_B = [
 
 const STYLES = `
   .bs-section {
-    background: #FAF8F5;
+    background: var(--bg-main);
+    color: var(--text-primary);
     padding: 88px 0 80px;
     overflow: hidden;
     user-select: none;
-    font-family: 'Albert Sans', sans-serif;
+    font-family: var(--font-body);
+    border-top: 1px solid var(--border-light);
   }
 
   /* ── Header ── */
   .bs-header {
     max-width: 680px;
-    margin: 0 auto 52px;
+    margin: 0 auto 48px;
     text-align: center;
     padding: 0 24px;
   }
   .bs-eyebrow {
-    font-size: 9px;
+    font-family: var(--font-ui);
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.42em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #C8A96E;
+    color: var(--color-accent);
     display: block;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
   .bs-heading {
-    font-family: 'Obviously', 'Albert Sans', sans-serif;
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-    font-weight: 300;
-    line-height: 1.1;
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
     letter-spacing: -0.01em;
-    color: #1A1410;
-    margin: 0 0 18px;
+    color: var(--text-primary);
+    margin: 0 0 16px;
   }
   .bs-rule {
-    width: 40px;
-    height: 1px;
-    background: #C8A96E;
-    opacity: 0.4;
-    margin: 0 auto 18px;
+    width: 56px;
+    height: 2.5px;
+    background: var(--color-accent);
+    margin: 0 auto 20px;
   }
   .bs-sub {
-    font-size: clamp(0.8rem, 1.5vw, 0.875rem);
-    line-height: 1.75;
-    color: #8C8480;
-    max-width: 480px;
+    font-family: var(--font-body);
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 520px;
     margin: 0 auto;
     text-wrap: balance;
   }
@@ -92,7 +95,7 @@ const STYLES = `
     width: 100%;
   }
 
-  /* Edge fades — matched exactly to bg color */
+  /* Edge fades — matched exactly to design system bg color */
   .bs-fade-left,
   .bs-fade-right {
     position: absolute;
@@ -102,13 +105,13 @@ const STYLES = `
     z-index: 10;
     pointer-events: none;
   }
-  .bs-fade-left  { left: 0;  background: linear-gradient(to right, #FAF8F5, transparent); }
-  .bs-fade-right { right: 0; background: linear-gradient(to left,  #FAF8F5, transparent); }
+  .bs-fade-left  { left: 0;  background: linear-gradient(to right, var(--bg-main), transparent); }
+  .bs-fade-right { right: 0; background: linear-gradient(to left,  var(--bg-main), transparent); }
 
   .bs-row {
     overflow: hidden;
     width: 100%;
-    padding: 10px 0;
+    padding: 12px 0;
   }
 
   /* Pause on hover — applied to the outer wrap */
@@ -137,23 +140,30 @@ const STYLES = `
 
   /* ── Logo cell ── */
   .bs-logo-cell {
-    /* Fixed cell keeps all logos visually equal weight */
-    width: 120px;
-    height: 52px;
+    width: 130px;
+    height: 60px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    filter: grayscale(0.1) opacity(0.5);
-    transition: filter 0.35s ease;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 10px;
+    box-shadow: var(--shadow-soft);
+    filter: grayscale(0.2) opacity(0.7);
+    transition: all var(--transition-fast);
     cursor: default;
   }
   .bs-track-wrap:hover .bs-logo-cell:hover {
     filter: grayscale(0) opacity(1);
+    border-color: var(--border-medium);
+    box-shadow: var(--shadow-card);
+    transform: translateY(-2px);
   }
   .bs-logo-cell img {
     max-width: 100%;
-    max-height: 48px;
+    max-height: 40px;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -168,15 +178,15 @@ const STYLES = `
   /* ── Disclaimer ── */
   .bs-disclaimer {
     text-align: center;
-    margin-top: 44px;
+    margin-top: 48px;
     padding: 0 24px;
   }
   .bs-disclaimer p {
-    font-size: 10px;
-    letter-spacing: 0.02em;
+    font-family: var(--font-ui);
+    font-size: 11px;
+    letter-spacing: 0.05em;
     line-height: 1.7;
-    color: #1A1410;
-    opacity: 0.3;
+    color: var(--text-muted);
     max-width: 560px;
     margin: 0 auto;
     text-wrap: balance;
@@ -206,7 +216,6 @@ function MarqueeRow({ logos, direction }) {
             <img src={logo.src} alt={logo.alt} loading="lazy" />
           </div>
         ))}
-        ``
       </div>
     </div>
   );

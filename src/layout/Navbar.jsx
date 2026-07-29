@@ -1,21 +1,11 @@
 import { useState, useEffect } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, ArrowUpRight } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import logoMain from "../assets/logoTriveni.png";
 
 const NAV_LINKS = [
   { name: "Home", href: "/" },
-  // {
-  //   name: "About",
-  //   href: "#",
-  //   dropdownItems: [
-  //     { label: "About us", href: "/about" },
-  //     { label: "Legacy", href: "/legacy" },
-  //     { label: "Certifications and Approvals", href: "/certifications" },
-  //   ],
-  // },
   { name: "About", href: "/about" },
-
   {
     name: "Projects",
     href: "#",
@@ -45,13 +35,14 @@ const NAV_LINKS = [
         items: [
           { label: "Wooden flooring", href: "/wooden-flooring" },
           { label: "Thermopine / Thermoash", href: "/thermopine" },
+          { label: "Wpc Decking", href: "/wpc-decking" },
         ],
       },
       {
         title: "Cladding",
         items: [
           { label: "I clad", href: "/i-clad" },
-          { label: "Wpc panelling / decking", href: "/wpc-panelling" },
+          { label: "Wpc panelling", href: "/wpc-panelling" },
         ],
       },
       {
@@ -60,8 +51,8 @@ const NAV_LINKS = [
           { label: "Dimore", href: "/dimore" },
           { label: "Ispira", href: "/ispira" },
           { label: "Arvia", href: "/arvia" },
-          { label: "Marfil", href: "/monolith" },
-          { label: "Monolith", href: "/" },
+          { label: "Marfil", href: "/marfil" },
+          { label: "Monolith", href: "/monolith" },
         ],
       },
       {
@@ -69,29 +60,23 @@ const NAV_LINKS = [
         items: [
           { label: "Marble Furniture", href: "/marble-furniture" },
           { label: "Wash Basin", href: "/wash-basin" },
-          { label: "Bath Tub,", href: "/bath-tub," },
-          { label: "Wall Murals,", href: "/wall-murals," },
-          { label: "marble artifacts", href: "/marble-artifacts," },
-          { label: "Marble Fountain", href: "/marble-fountain," },
+          { label: "Bath Tub", href: "/bath-tub" },
+          { label: "Wall Murals", href: "/wall-murals" },
+          { label: "Marble Artifacts", href: "/marble-artifacts" },
+          { label: "Marble Fountain", href: "/marble-fountain" },
         ],
       },
     ],
   },
-
   { name: "Blogs", href: "/blogs" },
   { name: "Contact", href: "/contact" },
 ];
-
-const desktopLinkClass =
-  "flex items-center gap-1 whitespace-nowrap font-['AlbertSans'] text-[14px] font-normal leading-none tracking-normal text-[#141C3A] transition-colors hover:text-[#C67D55]";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
-  // Tracks the name of whichever navigation link is currently active under the cursor
   const [hoveredLink, setHoveredLink] = useState(null);
 
   useEffect(() => {
@@ -100,7 +85,7 @@ const Navbar = () => {
       if (!isOpen) {
         if (currentScrollY > lastScrollY && currentScrollY > 80) {
           setIsVisible(false);
-          setHoveredLink(null); // Clear all active hover states cleanly on scroll hide
+          setHoveredLink(null);
         } else {
           setIsVisible(true);
         }
@@ -122,26 +107,36 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`sticky top-0 z-50 w-full bg-white shadow-md border-b border-[#E4D4C4]/40 transition-transform duration-300 ease-in-out ${
+      className={`sticky top-0 z-50 w-full bg-card/95 backdrop-blur-md shadow-soft border-b border-[var(--border-light)] transition-transform duration-300 ease-out ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       <div className="relative mx-auto flex h-[72px] max-w-[1440px] items-center px-5 md:px-10 lg:px-[120px]">
-        {/* Logo */}
+        
+        {/* Brand Logo */}
         <NavLink
           to="/"
           onClick={closeMenu}
-          className="flex shrink-0 items-center"
+          className="flex shrink-0 items-center justify-start min-w-0 transition-all duration-300 hover:opacity-85 active:scale-[0.98]"
+          style={{ height: "48px" }}
         >
           <img
             src={logoMain}
-            alt="Triveni"
-            className="h-[104px] w-auto object-contain"
+            alt="Triveni - The Granite Studio"
+            className="block shrink-0"
+            style={{
+              height: "104px",
+              maxHeight: "144px",
+              width: "auto",
+              maxWidth: "200px",
+              objectFit: "contain",
+              objectPosition: "left",
+            }}
           />
         </NavLink>
 
         {/* Desktop Navigation Links */}
-        <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-[28px] lg:flex">
+        <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-[32px] lg:flex">
           {NAV_LINKS.map((link) => (
             <div
               key={link.name}
@@ -151,32 +146,53 @@ const Navbar = () => {
             >
               <NavLink
                 to={link.href}
-                className={({ isActive }) =>
-                  `${desktopLinkClass} ${
-                    isActive && link.href !== "#"
-                      ? "text-[#C67D55] font-medium"
-                      : ""
-                  } ${hoveredLink === link.name ? "text-[#C67D55]" : ""}`
-                }
+                className={({ isActive }) => {
+                  const isCurrentActive = isActive && link.href !== "#";
+                  const isHovered = hoveredLink === link.name;
+                  return `group flex items-center gap-1.5 whitespace-nowrap font-ui text-[14px] font-medium leading-none tracking-wide transition-colors duration-200 ${
+                    isCurrentActive || isHovered
+                      ? "text-[var(--color-accent)]"
+                      : "text-primary"
+                  }`;
+                }}
               >
-                {link.name}
-                {(link.dropdownItems || link.isMegaMenu) && (
-                  <ChevronDown
-                    size={13}
-                    strokeWidth={2}
-                    className={`transition-transform duration-200 text-[#141C3A]/70 ${
-                      hoveredLink === link.name
-                        ? "rotate-180 text-[#C67D55]"
-                        : ""
-                    }`}
-                  />
-                )}
+                {({ isActive }) => {
+                  const isCurrentActive = isActive && link.href !== "#";
+                  const isHovered = hoveredLink === link.name;
+                  return (
+                    <>
+                      <span>{link.name}</span>
+                      
+                      {/* Submenu Indicator Chevron */}
+                      {(link.dropdownItems || link.isMegaMenu) && (
+                        <ChevronDown
+                          size={13}
+                          strokeWidth={2.2}
+                          className={`transition-transform duration-300 ease-out text-secondary ${
+                            isHovered
+                              ? "rotate-180 text-[var(--color-accent)]"
+                              : ""
+                          }`}
+                        />
+                      )}
+
+                      {/* Animated Active/Hover Underline Bar */}
+                      <span
+                        className={`absolute bottom-[18px] left-0 h-[2px] rounded-full bg-[var(--color-accent)] transition-all duration-300 ease-out ${
+                          isCurrentActive || isHovered
+                            ? "w-full opacity-100"
+                            : "w-0 opacity-0"
+                        }`}
+                      />
+                    </>
+                  );
+                }}
               </NavLink>
 
-              {/* Standard Dropdowns (About, Projects, Tools) */}
+              {/* Standard Dropdown Menu */}
               {link.dropdownItems && !link.isMegaMenu && (
                 <div
-                  className={`absolute left-1/2 top-[56px] min-w-[250px] -translate-x-1/2 rounded-b-[10px] border border-[#E4D4C4] bg-white py-1.5 shadow-[0_16px_36px_rgba(20,28,58,0.09)] transition-all duration-200 ${
+                  className={`absolute left-1/2 top-[64px] min-w-[240px] -translate-x-1/2 rounded-editorial-sm border border-[var(--border-light)] bg-card py-2 shadow-card transition-all duration-200 ease-out ${
                     hoveredLink === link.name
                       ? "visible opacity-100 translate-y-0 pointer-events-auto"
                       : "invisible opacity-0 translate-y-2 pointer-events-none"
@@ -188,14 +204,18 @@ const Navbar = () => {
                       to={item.href}
                       onClick={closeMenu}
                       className={({ isActive }) =>
-                        `block px-4 py-2.5 font-['AlbertSans'] text-[13px] font-normal transition-colors hover:bg-[#F8F1E8] hover:text-[#C67D55] ${
+                        `group/item flex items-center justify-between border-l-2 px-4 py-2.5 font-ui text-[13px] font-medium transition-all duration-200 ${
                           isActive
-                            ? "text-[#C67D55] bg-[#F8F1E8] font-medium"
-                            : "text-[#141C3A]"
+                            ? "border-[var(--color-accent)] bg-soft text-[var(--color-accent)] font-semibold pl-5"
+                            : "border-transparent text-primary hover:border-[var(--color-accent)] hover:bg-soft hover:text-[var(--color-accent)] hover:pl-5"
                         }`
                       }
                     >
-                      {item.label}
+                      <span>{item.label}</span>
+                      <ArrowUpRight
+                        size={12}
+                        className="opacity-0 -translate-x-1 transition-all duration-200 group-hover/item:opacity-100 group-hover/item:translate-x-0 text-[var(--color-accent)] shrink-0"
+                      />
                     </NavLink>
                   ))}
                 </div>
@@ -204,54 +224,63 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Desktop Enquire Button */}
-        <button className="ml-auto hidden h-[40px] min-w-[136px] items-center justify-center rounded-full bg-[#14204A] px-5 font-['AlbertSans'] text-[13px] font-medium text-white tracking-wide transition-colors hover:bg-[#1E2B5C] lg:flex shadow-sm">
-          Enquire Now
+        {/* Desktop Enquire CTA Button */}
+        <button 
+          onClick={() => {
+            const element = document.getElementById("inquiry");
+            if (element) element.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="group ml-auto hidden h-[40px] min-w-[136px] items-center justify-center gap-1.5 rounded-full bg-primary px-5 font-ui text-[13px] font-semibold text-inverse tracking-wider uppercase transition-all duration-200 hover:bg-[#13205D] active:scale-[0.97] lg:flex shadow-soft cursor-pointer"
+        >
+          <span>Enquire Now</span>
+          <ArrowUpRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </button>
 
-        {/* Mobile Toggle */}
+        {/* Mobile Toggle Button */}
         <button
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
-          className="ml-auto flex h-10 w-10 items-center justify-center rounded-full text-[#141C3A] transition-colors hover:bg-[#F8F8F8] lg:hidden"
+          aria-label="Toggle Navigation Menu"
+          className="ml-auto flex h-10 w-10 items-center justify-center rounded-full text-primary transition-colors hover:bg-soft active:scale-95 lg:hidden"
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
 
-        {/* PERFECTLY BOUNDED PRODUCTS MEGA MENU SURFACE PANEL */}
+        {/* Mega Menu Dropdown */}
         {productsLink && (
           <div
             onMouseEnter={() => setHoveredLink("Products")}
             onMouseLeave={() => setHoveredLink(null)}
-            className={`absolute left-5 right-5 md:left-10 md:right-10 lg:left-[120px] lg:right-[120px] top-[64px] rounded-b-xl border border-t-0 border-[#E4D4C4]/60 bg-white shadow-[0_20px_40px_rgba(20,28,58,0.1)] transition-all duration-300 ease-in-out hidden lg:block ${
+            className={`absolute left-5 right-5 md:left-10 md:right-10 lg:left-[120px] lg:right-[120px] top-[70px] rounded-editorial border border-t-0 border-[var(--border-light)] bg-card shadow-card transition-all duration-300 ease-out hidden lg:block overflow-hidden ${
               hoveredLink === "Products"
                 ? "opacity-100 translate-y-0 pointer-events-auto"
                 : "opacity-0 -translate-y-2 pointer-events-none"
             }`}
           >
-            <div className="p-8">
-              {/* Changed layout from grid-cols-3 to grid-cols-5 so all 5 sections align perfectly in one single row */}
+            <div className="p-8 bg-card">
               <div className="grid grid-cols-5 gap-6">
                 {productsLink.megaSections.map((section) => (
                   <div key={section.title} className="flex flex-col">
-                    <span className="font-['AlbertSans'] text-[11px] uppercase tracking-[0.15em] font-bold text-[#C67D55] mb-3 pb-1.5 border-b border-[#E4D4C4]/30">
+                    <span className="font-ui text-[11px] uppercase tracking-[0.15em] font-bold text-[var(--color-accent)] mb-3 pb-1.5 border-b border-[var(--border-light)] flex items-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
                       {section.title}
                     </span>
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-0.5">
                       {section.items.map((item) => (
                         <NavLink
                           key={item.label}
                           to={item.href}
                           onClick={closeMenu}
                           className={({ isActive }) =>
-                            `font-['AlbertSans'] text-[13px] font-normal py-1.5 transition-colors hover:text-[#C67D55] ${
+                            `group/mega flex items-center gap-1.5 font-ui text-[13px] font-medium py-1.5 transition-all duration-200 hover:translate-x-1 ${
                               isActive
-                                ? "text-[#C67D55] font-medium"
-                                : "text-[#141C3A]"
+                                ? "text-[var(--color-accent)] font-semibold"
+                                : "text-primary hover:text-[var(--color-accent)]"
                             }`
                           }
                         >
-                          {item.label}
+                          <span className="h-1 w-1 rounded-full bg-[var(--color-accent)] opacity-0 transition-all duration-200 group-hover/mega:opacity-100" />
+                          <span>{item.label}</span>
                         </NavLink>
                       ))}
                     </div>
@@ -263,17 +292,17 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Mobile Menu Options Dropdown */}
+      {/* Mobile Accordion Menu Dropdown */}
       <div
-        className={`overflow-hidden bg-white shadow-[0_14px_32px_rgba(20,28,58,0.08)] transition-all duration-300 lg:hidden ${
-          isOpen ? "max-h-[850px] border-t border-[#E4D4C4]" : "max-h-0"
+        className={`overflow-hidden bg-card transition-all duration-300 ease-in-out lg:hidden ${
+          isOpen ? "max-h-[850px] border-t border-[var(--border-light)] shadow-card" : "max-h-0"
         }`}
       >
         <div className="px-6 py-5">
           {NAV_LINKS.map((link) => (
             <div
               key={link.name}
-              className="border-b border-[#E4D4C4]/60 last:border-b-0"
+              className="border-b border-[var(--border-light)] last:border-b-0"
             >
               {link.dropdownItems || link.isMegaMenu ? (
                 <>
@@ -281,28 +310,34 @@ const Navbar = () => {
                     type="button"
                     onClick={() =>
                       setOpenDropdown((prev) =>
-                        prev === link.name ? null : link.name,
+                        prev === link.name ? null : link.name
                       )
                     }
-                    className="flex w-full items-center justify-between py-3.5 font-['AlbertSans'] text-[15px] font-normal text-[#141C3A]"
+                    className={`flex w-full items-center justify-between py-3.5 font-ui text-[15px] font-medium transition-colors ${
+                      openDropdown === link.name ? "text-[var(--color-accent)]" : "text-primary"
+                    }`}
                   >
-                    {link.name}
+                    <span>{link.name}</span>
                     <ChevronDown
                       size={16}
                       strokeWidth={2}
-                      className={`transition-transform text-[#141C3A]/60 ${
+                      className={`transition-transform duration-200 text-secondary ${
                         openDropdown === link.name
-                          ? "rotate-180 text-[#C67D55]"
+                          ? "rotate-180 text-[var(--color-accent)]"
                           : ""
                       }`}
                     />
                   </button>
 
                   <div
-                    className={`grid transition-all duration-300 ${openDropdown === link.name ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+                    className={`grid transition-all duration-300 ease-in-out ${
+                      openDropdown === link.name
+                        ? "grid-rows-[1fr] opacity-100 mb-2"
+                        : "grid-rows-[0fr] opacity-0"
+                    }`}
                   >
                     <div className="overflow-hidden">
-                      <div className="pb-3 pl-4 flex flex-col gap-0.5">
+                      <div className="pl-3 border-l-2 border-[var(--border-light)] flex flex-col gap-1 my-1">
                         {link.isMegaMenu && link.megaSections
                           ? link.megaSections
                               .flatMap((s) => s.items)
@@ -312,10 +347,10 @@ const Navbar = () => {
                                   to={item.href}
                                   onClick={closeMenu}
                                   className={({ isActive }) =>
-                                    `block py-2 font-['AlbertSans'] text-[13px] font-normal ${
+                                    `block py-1.5 px-3 rounded-editorial-sm font-ui text-[13px] font-medium transition-colors ${
                                       isActive
-                                        ? "text-[#C67D55] font-medium"
-                                        : "text-[#4A4A4A]"
+                                        ? "text-[var(--color-accent)] bg-soft font-semibold"
+                                        : "text-secondary hover:text-primary hover:bg-soft"
                                     }`
                                   }
                                 >
@@ -328,10 +363,10 @@ const Navbar = () => {
                                 to={item.href}
                                 onClick={closeMenu}
                                 className={({ isActive }) =>
-                                  `block py-2 font-['AlbertSans'] text-[13px] font-normal ${
+                                  `block py-1.5 px-3 rounded-editorial-sm font-ui text-[13px] font-medium transition-colors ${
                                     isActive
-                                      ? "text-[#C67D55] font-medium"
-                                      : "text-[#4A4A4A]"
+                                      ? "text-[var(--color-accent)] bg-soft font-semibold"
+                                      : "text-secondary hover:text-primary hover:bg-soft"
                                   }`
                                 }
                               >
@@ -347,8 +382,8 @@ const Navbar = () => {
                   to={link.href}
                   onClick={closeMenu}
                   className={({ isActive }) =>
-                    `block py-3.5 font-['AlbertSans'] text-[15px] font-normal ${
-                      isActive ? "text-[#C67D55] font-medium" : "text-[#141C3A]"
+                    `block py-3.5 font-ui text-[15px] font-medium transition-colors ${
+                      isActive ? "text-[var(--color-accent)] font-semibold" : "text-primary hover:text-[var(--color-accent)]"
                     }`
                   }
                 >
@@ -358,8 +393,17 @@ const Navbar = () => {
             </div>
           ))}
 
-          <button className="mt-5 flex h-[44px] w-full items-center justify-center rounded-full bg-[#14204A] font-['AlbertSans'] text-[13px] font-medium text-white tracking-wide">
-            Enquire Now
+          {/* Mobile Enquire Button */}
+          <button 
+            onClick={() => {
+              closeMenu();
+              const element = document.getElementById("inquiry");
+              if (element) element.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="mt-6 flex h-[44px] w-full items-center justify-center gap-2 rounded-full bg-primary font-ui text-[13px] font-semibold text-inverse tracking-wider uppercase transition-all duration-200 active:scale-[0.98] shadow-soft"
+          >
+            <span>Enquire Now</span>
+            <ArrowUpRight size={15} />
           </button>
         </div>
       </div>
