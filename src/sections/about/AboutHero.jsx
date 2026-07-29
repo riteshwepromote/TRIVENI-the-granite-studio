@@ -87,7 +87,7 @@ const designSystemStyles = `
     inset: 40px;
     border: 1px solid rgba(255, 255, 255, 0.18);
     pointer-events: none;
-    z-index: 12;
+    z-index: 22;
     opacity: 0;
     transform: scale(1.02);
     transition: opacity 1.8s cubic-bezier(0.22, 1, 0.36, 1), transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
@@ -107,7 +107,7 @@ const designSystemStyles = `
     width: 30px;
     height: 30px;
     pointer-events: none;
-    z-index: 11;
+    z-index: 22;
     opacity: 0;
     transition: opacity 1.2s ease-out;
   }
@@ -128,7 +128,7 @@ const designSystemStyles = `
 
   .ambient-hero-title {
     position: absolute;
-    z-index: 13;
+    z-index: 23;
     text-align: center;
     color: #FFFFFF;
     pointer-events: none;
@@ -243,27 +243,28 @@ const AboutHero = () => {
             <div className="architectural-crosshair crosshair-br init-trigger" />
 
             <div className="ambient-hero-title px-4">
-              <span className="font-ui text-[11px] uppercase tracking-[0.2em] text-white/70 font-semibold init-trigger clip-reveal">
+              <span className="font-ui text-[11px] uppercase tracking-[0.2em] text-white/90 font-semibold init-trigger clip-reveal drop-shadow-md">
                 The Architecture of Space
               </span>
-              <h2 className="font-heading text-4xl md:text-7xl font-medium tracking-wide italic init-trigger clip-reveal">
+              <h2 className="font-heading text-4xl md:text-7xl font-medium tracking-wide italic init-trigger clip-reveal drop-shadow-lg text-white">
                 Triveni Studio
               </h2>
             </div>
 
-            <div className="kinetic-canvas">
+            <div className="kinetic-canvas relative">
               <img 
                 src="https://res.cloudinary.com/x5rakscg/image/upload/v1785231905/legacy_ero_yll1wl.jpg" 
                 alt="Premium architectural marble showroom interior" 
                 className="kinetic-image"
                 loading="eager"
               />
+              <div className="absolute inset-0 bg-black/30 pointer-events-none" />
               <div 
-                className="absolute inset-x-0 bottom-16 hidden lg:flex flex-col items-center justify-center text-center text-white mix-blend-difference pointer-events-none transition-opacity duration-300"
+                className="absolute inset-x-0 bottom-16 hidden lg:flex flex-col items-center justify-center text-center text-white mix-blend-normal pointer-events-none transition-opacity duration-300 z-30"
                 style={{ opacity: `calc(1 - (var(--progress) * 6))` }}
               >
-                <span className="font-ui text-[10px] tracking-[0.2em] uppercase font-semibold mb-2">Scroll to Unveil</span>
-                <div className="w-[1px] h-8 bg-white/40 relative overflow-hidden">
+                <span className="font-ui text-[10px] tracking-[0.2em] uppercase font-semibold mb-2 drop-shadow-md">Scroll to Unveil</span>
+                <div className="w-[1px] h-8 bg-white/60 relative overflow-hidden">
                   <div className="absolute top-0 inset-x-0 h-1/2 bg-white animate-bounce" />
                 </div>
               </div>

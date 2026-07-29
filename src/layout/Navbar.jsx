@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, Menu, X, ArrowUpRight } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logoMain from "../assets/logoTriveni.png";
 
 const NAV_LINKS = [
@@ -66,6 +66,7 @@ const NAV_LINKS = [
 ];
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -94,6 +95,11 @@ const Navbar = () => {
     setIsOpen(false);
     setOpenDropdown(null);
     setHoveredLink(null);
+  };
+
+  const handleEnquireClick = () => {
+    closeMenu();
+    navigate("/contact");
   };
 
   const productsLink = NAV_LINKS.find((l) => l.isMegaMenu);
@@ -219,10 +225,7 @@ const Navbar = () => {
 
         {/* Desktop Enquire CTA Button */}
         <button 
-          onClick={() => {
-            const element = document.getElementById("inquiry");
-            if (element) element.scrollIntoView({ behavior: "smooth" });
-          }}
+          onClick={handleEnquireClick}
           className="group ml-auto hidden h-[40px] min-w-[136px] items-center justify-center gap-1.5 rounded-full bg-primary px-5 font-ui text-[13px] font-semibold text-inverse tracking-wider uppercase transition-all duration-200 hover:bg-[#13205D] active:scale-[0.97] lg:flex shadow-soft cursor-pointer"
         >
           <span>Enquire Now</span>
@@ -388,11 +391,7 @@ const Navbar = () => {
 
           {/* Mobile Enquire Button */}
           <button 
-            onClick={() => {
-              closeMenu();
-              const element = document.getElementById("inquiry");
-              if (element) element.scrollIntoView({ behavior: "smooth" });
-            }}
+            onClick={handleEnquireClick}
             className="mt-6 flex h-[44px] w-full items-center justify-center gap-2 rounded-full bg-primary font-ui text-[13px] font-semibold text-inverse tracking-wider uppercase transition-all duration-200 active:scale-[0.98] shadow-soft"
           >
             <span>Enquire Now</span>

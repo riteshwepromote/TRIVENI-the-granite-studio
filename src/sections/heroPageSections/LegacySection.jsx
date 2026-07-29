@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
@@ -153,249 +153,284 @@ function Hero() {
 
 export default function TriveniLegacyScrollytelling() {
   const containerRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const loaderRef = useRef(null);
 
   useLayoutEffect(() => {
-    // 1. Smooth cinematic scrolling
-    const lenis = new Lenis({
-      duration: 1.5,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-    });
+    const sectionElement = containerRef.current;
+    if (!sectionElement) return;
 
-    // Tell ScrollTrigger a scroll happened on every Lenis frame — without
-    // this, ScrollTrigger keeps reading native scroll position while Lenis
-    // is driving a virtual one, and the two fall out of sync (scroll feels
-    // stuck, jumpy, or triggers fire at the wrong spot).
-    lenis.on("scroll", ScrollTrigger.update);
+    let lenis = null;
+    let ctx = null;
 
-    // Drive Lenis from GSAP's own ticker instead of a separate rAF loop,
-    // so both stay on the same clock. lagSmoothing(0) stops GSAP from
-    // trying to "catch up" after a tab goes idle, which otherwise causes
-    // a visible jump/stutter in the scroll.
-    const lenisRaf = (time) => lenis.raf(time * 1000);
-    gsap.ticker.add(lenisRaf);
-    gsap.ticker.lagSmoothing(0);
+    // Trigger-based entry loader using ScrollTrigger
+    const st = ScrollTrigger.create({
+      trigger: sectionElement,
+      start: "top 80%", // Triggers when the top of the component hits 80% down the viewport
+      once: true,
+      onEnter: () => {
+        // Run section-specific entrance loader animation
+        const tl = gsap.timeline({
+          onComplete: () => setIsLoading(false),
+        });
 
-    // 2. GSAP animation setup
-    const ctx = gsap.context(() => {
-      /* ---------- Hero ---------- */
-      const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      heroTl
-        .fromTo(
-          ".hero-image-wrap",
-          { clipPath: "inset(100% 0% 0% 0%)" },
-          {
-            clipPath: "inset(0% 0% 0% 0%)",
-            duration: 1.4,
-            ease: "power4.inOut",
-          },
-        )
-        .fromTo(
-          ".hero-image",
-          { scale: 1.25 },
-          { scale: 1, duration: 1.8, ease: "power3.out" },
-          0,
-        )
-        .fromTo(
-          ".hero-text > *",
-          { y: 32, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1, stagger: 0.12 },
-          0.25,
-        );
+        tl.to(loaderRef.current, {
+          yPercent: -100,
+          duration: 1.2,
+          ease: "power4.inOut",
+        });
 
-      gsap.to(".hero-timeline-fill", {
-        width: "100%",
-        duration: 1.6,
-        ease: "power2.inOut",
-        delay: 0.9,
-      });
+        // 1. Smooth cinematic scrolling inside the component
+        lenis = new Lenis({
+          duration: 1.5,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          wheelMultiplier: 1,
+          touchMultiplier: 2,
+        });
 
-      gsap.to(".hero-image", {
-        yPercent: 10,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".hero-image-wrap",
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+        lenis.on("scroll", ScrollTrigger.update);
+        const lenisRaf = (time) => lenis.raf(time * 1000);
+        gsap.ticker.add(lenisRaf);
+        gsap.ticker.lagSmoothing(0);
 
-      /* ---------- Chapter images: clip-path reveal + parallax ---------- */
-      gsap.utils.toArray(".chapter-image-wrap").forEach((wrapper) => {
-        const img = wrapper.querySelector(".chapter-image");
+        // 2. GSAP animation setup
+        ctx = gsap.context(() => {
+          /* ---------- Hero ---------- */
+          const heroTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+          heroTl
+            .fromTo(
+              ".hero-image-wrap",
+              { clipPath: "inset(100% 0% 0% 0%)" },
+              {
+                clipPath: "inset(0% 0% 0% 0%)",
+                duration: 1.4,
+                ease: "power4.inOut",
+              },
+            )
+            .fromTo(
+              ".hero-image",
+              { scale: 1.25 },
+              { scale: 1, duration: 1.8, ease: "power3.out" },
+              0,
+            )
+            .fromTo(
+              ".hero-text > *",
+              { y: 32, opacity: 0 },
+              { y: 0, opacity: 1, duration: 1, stagger: 0.12 },
+              0.25,
+            );
 
-        gsap.fromTo(
-          wrapper,
-          { clipPath: "inset(18% 0% 18% 0% round 0px)" },
-          {
-            clipPath: "inset(0% 0% 0% 0% round 0px)",
-            duration: 1.2,
-            ease: "power4.out",
-            scrollTrigger: {
-              trigger: wrapper,
-              start: "top 85%",
-            },
-          },
-        );
+          gsap.to(".hero-timeline-fill", {
+            width: "100%",
+            duration: 1.6,
+            ease: "power2.inOut",
+            delay: 0.9,
+          });
 
-        if (img) {
-          gsap.fromTo(
-            img,
-            { scale: 1.18 },
-            {
-              scale: 1,
-              duration: 1.4,
-              ease: "power3.out",
-              scrollTrigger: { trigger: wrapper, start: "top 85%" },
-            },
-          );
-          gsap.to(img, {
-            yPercent: 14,
+          gsap.to(".hero-image", {
+            yPercent: 10,
             ease: "none",
             scrollTrigger: {
-              trigger: wrapper,
-              start: "top bottom",
+              trigger: ".hero-image-wrap",
+              start: "top top",
               end: "bottom top",
               scrub: true,
             },
           });
-        }
-      });
 
-      /* ---------- Floating editorial cards ---------- */
-      gsap.utils.toArray(".chapter-card").forEach((card) => {
-        gsap.fromTo(
-          card,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1.1,
-            ease: "power3.out",
-            scrollTrigger: { trigger: card, start: "top 92%" },
-          },
-        );
-      });
+          /* ---------- Chapter images: clip-path reveal + parallax ---------- */
+          gsap.utils.toArray(".chapter-image-wrap").forEach((wrapper) => {
+            const img = wrapper.querySelector(".chapter-image");
 
-      /* ---------- Giant background years: slow parallax + fade ---------- */
-      gsap.utils.toArray(".chapter-year-giant").forEach((el) => {
-        gsap.fromTo(
-          el,
-          { opacity: 0, yPercent: 10 },
-          {
-            opacity: 1,
-            yPercent: 0,
-            duration: 1.2,
-            ease: "power2.out",
-            scrollTrigger: { trigger: el, start: "top 95%" },
-          },
-        );
-        gsap.to(el, {
-          yPercent: -8,
-          ease: "none",
-          scrollTrigger: {
-            trigger: el,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      });
+            gsap.fromTo(
+              wrapper,
+              { clipPath: "inset(18% 0% 18% 0% round 0px)" },
+              {
+                clipPath: "inset(0% 0% 0% 0% round 0px)",
+                duration: 1.2,
+                ease: "power4.out",
+                scrollTrigger: {
+                  trigger: wrapper,
+                  start: "top 85%",
+                },
+              },
+            );
 
-      /* ---------- Titles: gentle reveal ---------- */
-      gsap.utils.toArray(".chapter-card .chapter-title").forEach((el) => {
-        gsap.fromTo(
-          el,
-          { y: 20, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.9,
-            ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 90%" },
-          },
-        );
-      });
+            if (img) {
+              gsap.fromTo(
+                img,
+                { scale: 1.18 },
+                {
+                  scale: 1,
+                  duration: 1.4,
+                  ease: "power3.out",
+                  scrollTrigger: { trigger: wrapper, start: "top 85%" },
+                },
+              );
+              gsap.to(img, {
+                yPercent: 14,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: wrapper,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: true,
+                },
+              });
+            }
+          });
 
-      /* ---------- Finale: animated journey map ---------- */
-      const mapPath = document.querySelector(".map-path");
-      if (mapPath) {
-        const length = mapPath.getTotalLength();
-        gsap.set(mapPath, {
-          strokeDasharray: length,
-          strokeDashoffset: length,
-        });
+          /* ---------- Floating editorial cards ---------- */
+          gsap.utils.toArray(".chapter-card").forEach((card) => {
+            gsap.fromTo(
+              card,
+              { y: 40, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 1.1,
+                ease: "power3.out",
+                scrollTrigger: { trigger: card, start: "top 92%" },
+              },
+            );
+          });
 
-        gsap.to(mapPath, {
-          strokeDashoffset: 0,
-          duration: 2,
-          ease: "power2.inOut",
-          scrollTrigger: {
-            trigger: ".finale-section",
-            start: "top center",
-            end: "bottom bottom",
-            scrub: 1.5,
-          },
-        });
-      }
+          /* ---------- Giant background years: slow parallax + fade ---------- */
+          gsap.utils.toArray(".chapter-year-giant").forEach((el) => {
+            gsap.fromTo(
+              el,
+              { opacity: 0, yPercent: 10 },
+              {
+                opacity: 1,
+                yPercent: 0,
+                duration: 1.2,
+                ease: "power2.out",
+                scrollTrigger: { trigger: el, start: "top 95%" },
+              },
+            );
+            gsap.to(el, {
+              yPercent: -8,
+              ease: "none",
+              scrollTrigger: {
+                trigger: el,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+              },
+            });
+          });
 
-      gsap.fromTo(
-        ".map-node",
-        { scale: 0, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.5,
-          stagger: 0.3,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: ".finale-section",
-            start: "top 40%",
-            end: "bottom 80%",
-            scrub: 1,
-          },
-        },
-      );
+          /* ---------- Titles: gentle reveal ---------- */
+          gsap.utils.toArray(".chapter-card .chapter-title").forEach((el) => {
+            gsap.fromTo(
+              el,
+              { y: 20, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.9,
+                ease: "power3.out",
+                scrollTrigger: { trigger: el, start: "top 90%" },
+              },
+            );
+          });
 
-      gsap.utils.toArray(".stat-card").forEach((card, i) => {
-        gsap.fromTo(
-          card,
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            delay: i * 0.08,
-            ease: "power3.out",
-            scrollTrigger: { trigger: card, start: "top 92%" },
-          },
-        );
-      });
-    }, containerRef);
+          /* ---------- Finale: animated journey map ---------- */
+          const mapPath = document.querySelector(".map-path");
+          if (mapPath) {
+            const length = mapPath.getTotalLength();
+            gsap.set(mapPath, {
+              strokeDasharray: length,
+              strokeDashoffset: length,
+            });
 
-    // Web fonts (Cormorant Garamond etc.) and lazy images can change
-    // section heights after ScrollTrigger's first measurement. Re-measure
-    // once things settle so trigger start/end points line up correctly.
+            gsap.to(mapPath, {
+              strokeDashoffset: 0,
+              duration: 2,
+              ease: "power2.inOut",
+              scrollTrigger: {
+                trigger: ".finale-section",
+                start: "top center",
+                end: "bottom bottom",
+                scrub: 1.5,
+              },
+            });
+          }
+
+          gsap.fromTo(
+            ".map-node",
+            { scale: 0, opacity: 0 },
+            {
+              scale: 1,
+              opacity: 1,
+              duration: 0.5,
+              stagger: 0.3,
+              ease: "back.out(1.7)",
+              scrollTrigger: {
+                trigger: ".finale-section",
+                start: "top 40%",
+                end: "bottom 80%",
+                scrub: 1,
+              },
+            },
+          );
+
+          gsap.utils.toArray(".stat-card").forEach((card, i) => {
+            gsap.fromTo(
+              card,
+              { y: 30, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                delay: i * 0.08,
+                ease: "power3.out",
+                scrollTrigger: { trigger: card, start: "top 92%" },
+              },
+            );
+          });
+        }, containerRef);
+      },
+    });
+
     const refresh = () => ScrollTrigger.refresh();
     document.fonts?.ready?.then(refresh);
     window.addEventListener("load", refresh);
 
     return () => {
+      st.kill();
       window.removeEventListener("load", refresh);
-      gsap.ticker.remove(lenisRaf);
-      lenis.destroy();
-      ctx.revert();
+      if (lenis) {
+        gsap.ticker.remove((time) => lenis.raf(time * 1000));
+        lenis.destroy();
+      }
+      if (ctx) ctx.revert();
     };
   }, []);
 
   return (
     <div
       ref={containerRef}
-      className="bg-brand text-primary font-body overflow-x-hidden"
+      className="bg-brand text-primary font-body overflow-x-hidden relative"
     >
+      {/* Section Entry Curtain Loader */}
+      <div
+        ref={loaderRef}
+        className={`absolute inset-0 z-50 bg-brand flex flex-col items-center justify-center transition-opacity duration-300 ${
+          !isLoading ? "pointer-events-none" : ""
+        }`}
+      >
+        <div className="space-y-4 text-center">
+          <span className="font-ui text-xs tracking-[0.2em] uppercase text-accent animate-pulse">
+            Loading Experience
+          </span>
+          <div className="w-32 h-[2px] bg-secondary/20 relative overflow-hidden mx-auto">
+            <div className="absolute inset-0 bg-accent animate-[shimmer_1.5s_infinite]" />
+          </div>
+        </div>
+      </div>
+
       <Hero />
 
       {/* MAIN TIMELINE — seven unique editorial layouts, one per chapter */}

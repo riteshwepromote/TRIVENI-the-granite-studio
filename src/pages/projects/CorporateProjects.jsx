@@ -8,7 +8,7 @@ import {
   Award, 
   Sparkles 
 } from "lucide-react";
-import featuredmg from "../../assets/featuredP.png";
+
 
 const ALL_PROJECTS = [
   // Corporate & Infrastructure
