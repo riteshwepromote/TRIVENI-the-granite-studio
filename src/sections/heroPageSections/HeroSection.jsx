@@ -11,6 +11,9 @@ export default function DesktopCanvas() {
   const videoRef = useRef(null);
   const mediaWrapperRef = useRef(null);
 
+  // Typography container reference for a clean collective slide-out to the left
+  const textContainerRef = useRef(null);
+
   // Typography references for entrance and scrubbed sequences
   const eyebrowRef = useRef(null);
   const titleRef = useRef(null);
@@ -34,7 +37,6 @@ export default function DesktopCanvas() {
       let rafId = null;
 
       // --- 1. INITIAL MOUNT ENTRANCE ANIMATION ---
-      // Triggers smooth slide-in/fade-in of elements the moment the component mounts on screen
       const entranceTl = gsap.timeline({ defaults: { ease: "power3.out" } });
       
       entranceTl
@@ -60,6 +62,12 @@ export default function DesktopCanvas() {
           },
         },
       });
+
+      // Slide text horizontally to the left out of the screen dynamically on scroll
+      tl.to(textContainerRef.current, {
+        x: -window.innerWidth * 0.8,
+        ease: "power1.inOut",
+      }, 0);
 
       // Subtle zoom effect during scroll
       tl.to(mediaWrapperRef.current, {
@@ -130,7 +138,8 @@ export default function DesktopCanvas() {
 
         {/* --- HIGH-END TYPOGRAPHY OVERLAY LAYER --- */}
         <div
-          className="absolute z-20 pointer-events-none"
+          ref={textContainerRef}
+          className="absolute z-20 pointer-events-none will-change-transform"
           style={{ left: "8%", top: "24%", maxWidth: "550px" }}
         >
           <p
