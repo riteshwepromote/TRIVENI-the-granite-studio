@@ -78,10 +78,10 @@ export default function AboutFacility() {
   const xTranslation = useTransform(scrollYProgress, [0, 1], ["0vw", "-700vw"]);
 
   return (
-    <div className="bg-[#111111] text-inverse font-body antialiased selection:bg-accent selection:text-white select-none">
+    <div className="bg-[#f9f8f6] text-[#1a1a1a] font-body antialiased selection:bg-accent selection:text-white select-none">
       
       {/* SCROLL TRACK CONTAINER */}
-      <div ref={containerRef} className="relative h-[800vh] w-full bg-[#111111]">
+      <div ref={containerRef} className="relative h-[800vh] w-full bg-[#f9f8f6]">
         
         {/* STICKY BOX PIN */}
         <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
@@ -94,12 +94,12 @@ export default function AboutFacility() {
             {REFRESHED_PROCESS_STEPS.map((step, idx) => (
               <section 
                 key={idx}
-                className="w-screen h-screen flex-shrink-0 grid grid-cols-1 lg:grid-cols-12 relative overflow-hidden bg-[#111111]"
+                className="w-screen h-screen flex-shrink-0 grid grid-cols-1 lg:grid-cols-12 relative overflow-hidden bg-[#f9f8f6]"
               >
                 {/* IMMERSIVE IMAGE LAYER */}
-                <div className="col-span-1 lg:col-span-6 relative h-1/2 lg:h-full w-full overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#111111]/30 to-[#111111] z-10 hidden lg:block" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#111111] via-transparent to-transparent z-10 lg:hidden" />
+                <div className="col-span-1 lg:col-span-6 relative h-1/2 lg:h-full w-full overflow-hidden bg-[#f0eee6]">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#f9f8f6]/20 to-[#f9f8f6] z-10 hidden lg:block" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#f9f8f6] via-transparent to-transparent z-10 lg:hidden" />
                   
                   <img
                     src={step.img}
@@ -107,18 +107,18 @@ export default function AboutFacility() {
                     className="w-full h-full object-cover select-none pointer-events-none object-center transition-editorial"
                     loading={idx <= 1 ? "eager" : "lazy"}
                   />
-                  <div className="absolute inset-0 border-r border-white/10 pointer-events-none z-20 m-6 rounded-editorial-lg hidden lg:block" />
+                  <div className="absolute inset-0 border-r border-black/10 pointer-events-none z-20 m-6 rounded-editorial-lg hidden lg:block" />
                 </div>
 
                 {/* EDITORIAL NARRATIVE CONTENT BLOCK */}
-                <div className="col-span-1 lg:col-span-6 h-1/2 lg:h-full bg-[#111111] text-inverse flex flex-col justify-center px-6 md:px-16 lg:px-24 relative">
+                <div className="col-span-1 lg:col-span-6 h-1/2 lg:h-full bg-[#f9f8f6] text-[#1a1a1a] flex flex-col justify-center px-6 md:px-16 lg:px-24 relative">
                   
                   {/* Top Navigation HUD */}
-                  <div className="absolute top-8 left-6 right-6 lg:left-24 lg:right-24 hidden md:flex items-center justify-between border-b border-white/10 pb-4">
+                  <div className="absolute top-8 left-6 right-6 lg:left-24 lg:right-24 hidden md:flex items-center justify-between border-b border-black/10 pb-4">
                     <span className="font-ui text-[11px] tracking-[0.2em] uppercase text-accent font-bold">
                       Triveni Quality Matrix
                     </span>
-                    <span className="font-number text-sm tracking-widest text-white/60 font-medium">
+                    <span className="font-number text-sm tracking-widest text-[#1a1a1a]/60 font-medium">
                       {step.num} // 08
                     </span>
                   </div>
@@ -126,11 +126,11 @@ export default function AboutFacility() {
                   {/* Core Content Layout */}
                   <div className="max-w-xl space-y-4 md:space-y-6">
                     <div>
-                      <span className="font-ui text-xs tracking-[0.2em] text-white/60 uppercase block font-semibold mb-2">
+                      <span className="font-ui text-xs tracking-[0.2em] text-[#1a1a1a]/60 uppercase block font-semibold mb-2">
                         {step.subtitle}
                       </span>
                       
-                      <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl text-white font-medium tracking-tight leading-[1.12]">
+                      <h2 className="font-heading text-3xl md:text-5xl lg:text-6xl text-[#1a1a1a] font-medium tracking-tight leading-[1.12]">
                         {step.title.split(" ").map((word, wIdx) => 
                           wIdx % 2 === 1 ? (
                             <span key={wIdx} className="italic text-accent mr-2">{word} </span>
@@ -143,13 +143,13 @@ export default function AboutFacility() {
 
                     <div className="w-14 h-[2.5px] bg-accent" />
 
-                    <p className="font-body text-sm md:text-base text-white/70 font-normal leading-relaxed tracking-wide">
+                    <p className="font-body text-sm md:text-base text-[#1a1a1a]/75 font-normal leading-relaxed tracking-wide">
                       {step.desc}
                     </p>
                   </div>
 
                   {/* Operational Bottom HUD Footer */}
-                  <div className="absolute bottom-8 left-6 right-6 lg:left-24 lg:right-24 hidden md:flex items-center justify-between border-t border-white/10 pt-4 font-ui text-[10px] text-white/40 tracking-[0.15em] uppercase font-semibold">
+                  <div className="absolute bottom-8 left-6 right-6 lg:left-24 lg:right-24 hidden md:flex items-center justify-between border-t border-black/10 pt-4 font-ui text-[10px] text-[#1a1a1a]/50 tracking-[0.15em] uppercase font-semibold">
                     <span>Mined Quality to Finished Laying</span>
                     <span>Triveni Production © 2026</span>
                   </div>

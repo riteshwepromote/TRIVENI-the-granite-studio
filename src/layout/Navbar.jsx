@@ -6,15 +6,8 @@ import logoMain from "../assets/logoTriveni.png";
 const NAV_LINKS = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
-  {
-    name: "Projects",
-    href: "#",
-    dropdownItems: [
-      { label: "Corporate Projects", href: "/corporate-projects" },
-      { label: "Restaurants/cafes", href: "/restaurants" },
-      { label: "Residential", href: "/residential" },
-    ],
-  },
+  
+  { name: "Projects", href: "/projects" },
   {
     name: "Products",
     href: "#",

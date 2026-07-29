@@ -29,12 +29,6 @@ const Legacy = lazy(() => import("./pages/Legacy"));
 const CorporateProjects = lazy(
   () => import("./pages/projects/CorporateProjects"),
 );
-const ResidentialProjects = lazy(
-  () => import("./pages/projects/ResidentialProjects"),
-);
-const RestaurantProjects = lazy(
-  () => import("./pages/projects/RestaurantProjects"),
-);
 const Granite = lazy(() => import("./pages/products/Granit"));
 const Sandstone = lazy(() => import("./pages/products/Sandstone"));
 const Limestone = lazy(() => import("./pages/products/Limestone"));
@@ -77,7 +71,7 @@ function App() {
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/projects" element={<Projects />} />
+              <Route path="/projects" element={<CorporateProjects />} />
               <Route path="/collections" element={<Collections />} />
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/contact" element={<Contact />} />
@@ -85,12 +79,8 @@ function App() {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/legacy" element={<Legacy />} />
 
-              <Route
-                path="/corporate-projects"
-                element={<CorporateProjects />}
-              />
-              <Route path="/restaurants" element={<RestaurantProjects />} />
-              <Route path="/residential" element={<ResidentialProjects />} />
+              
+              
 
               <Route path="/granite" element={<Granite />} />
               <Route path="/sandstone" element={<Sandstone />} />

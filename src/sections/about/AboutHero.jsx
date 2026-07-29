@@ -253,7 +253,7 @@ const AboutHero = () => {
 
             <div className="kinetic-canvas">
               <img 
-                src="https://ik.imagekit.io/4cj6kauug/Triveni/triveni2022.webp" 
+                src="https://res.cloudinary.com/x5rakscg/image/upload/v1785231905/legacy_ero_yll1wl.jpg" 
                 alt="Premium architectural marble showroom interior" 
                 className="kinetic-image"
                 loading="eager"
